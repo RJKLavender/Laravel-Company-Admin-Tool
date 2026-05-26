@@ -1,0 +1,29 @@
+# Sensitive Environment Configuration (Crucial!)
+.env
+.env.backup
+.env.production
+
+# Composer and Node Dependencies
+/vendor/
+/node_modules/
+
+# Application Logs and Cache
+/storage/*.key
+/storage/logs/*
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+
+# User Uploads (Prevents local company logos from going to GitHub)
+/storage/app/public/*
+public/storage
+
+# Frontend Compiled Assets
+/public/build/
+/public/hot/
+
+# IDE & System Files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
