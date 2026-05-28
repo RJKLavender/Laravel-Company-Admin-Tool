@@ -46,19 +46,16 @@
 
         <div>
             <label for="logo" class="block text-sm font-medium text-gray-700 mb-1">Company Logo</label>
-            
-            <!-- Shows current image helper if it exists in storage -->
+    
             @if($company->logo)
-                <div class="mb-2 flex items-center space-x-3">
-                    <img src="{{ asset('storage/' . $company->logo) }}" alt="Current Logo" class="w-16 h-16 object-cover rounded border">
-                    <span class="text-xs text-gray-500">Current logo uploaded. Choose a new file to replace it.</span>
-                </div>
+            <div class="mb-2 flex items-center space-x-3">
+            
+                <img src="{{ asset('storage/' . $company->logo) }}" alt="Current Logo" class="w-16 h-16 object-cover rounded border">
+                <span class="text-xs text-gray-500">Current logo uploaded. Choose a new file to replace it.</span>
+            </div>
             @endif
 
-            <input type="file" name="logo" id="logo" 
-                   class="w-full border p-1 rounded bg-gray-50 focus:ring-2 focus:ring-blue-500 @error('logo') border-red-500 @enderror">
-            <p class="text-gray-400 text-xs mt-1">Leave empty to keep your existing logo. Minimum dimensions: 100x100 pixels.</p>
-            @error('logo') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
+            <input type="file" name="logo" id="logo" class="w-full border p-1 rounded bg-gray-50">
         </div>
 
         <div class="flex justify-end space-x-3 pt-4 border-t">

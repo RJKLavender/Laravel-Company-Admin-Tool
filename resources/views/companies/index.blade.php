@@ -26,17 +26,33 @@
             <tr class="hover:bg-gray-50">
                 <td class="border p-3">
                     @if($company->logo)
-                        <img src="{{ asset('storage/' . $company->logo) }}" alt="Logo" class="w-12 h-12 object-cover rounded">
+                        <!-- Logo links directly to the company profile view -->
+                        <a href="{{ route('companies.show', $company->id) }}">
+                            <img src="{{ asset('storage/' . $company->logo) }}" alt="{{ $company->name }} Logo" width="100" height="100" class="w-12 h-12 object-cover rounded border hover:opacity-80 transition">
+                        </a>
                     @else
                         <span class="text-gray-400 text-sm">No Logo</span>
                     @endif
                 </td>
-                <td class="border p-3 font-semibold">{{ $company->name }}</td>
+                <td class="border p-3 font-semibold">
+                    <!-- Company Name links directly to the company profile view -->
+                    <a href="{{ route('companies.show', $company->id) }}" class="text-blue-600 hover:underline">
+                        {{ $company->name }}
+                    </a>
+                </td>
                 <td class="border p-3 text-gray-600">{{ $company->email ?? '-' }}</td>
-                <td class="border p-3 text-blue-600"><a href="{{ $company->website }}" target="_blank">{{ $company->website ?? '-' }}</a></td>
+                <td class="border p-3 text-blue-600">
+                    @if($company->website)
+                        <a href="{{ $company->website }}" target="_blank" class="hover:underline">{{ $company->website }}</a>
+                    @else
+                        <span class="text-gray-400">-</span>
+                    @endif
+                </td>
                 <td class="border p-3 text-center space-x-2">
+                    <!-- Added a direct view profile action link -->
+                    <a href="{{ route('companies.show', $company->id) }}" class="text-blue-600 hover:underline">View</a>
                     <a href="{{ route('companies.edit', $company->id) }}" class="text-yellow-600 hover:underline">Edit</a>
-                    <form action="{{ route('companies.destroy', $company->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Delete this company?');">
+                    <form action="{{ route('companies.destroy', $company->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Delete this company? All employees will be unassigned.');">
                         @csrf @method('DELETE')
                         <button type="submit" class="text-red-600 hover:underline">Delete</button>
                     </form>

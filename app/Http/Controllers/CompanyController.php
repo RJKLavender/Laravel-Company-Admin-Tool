@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
+use App\Http\Resources\CompanyResource;
 
 class CompanyController extends Controller
 {
@@ -15,7 +16,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-         $companies = Company::paginate(10);
+        $companies = Company::paginate(10);
         return view('companies.index', compact('companies'));   
     }
 
@@ -35,8 +36,9 @@ class CompanyController extends Controller
         $validatedData = $request->validated(); // Contains only verified fields
 
     if ($request->hasFile('logo')) {
-        $validatedData['logo'] = $request->file('logo')->store('logos', 'public');
-    }
+    // This saves the file directly into: storage/app/public/logos/
+    $validatedData['logo'] = $request->file('logo')->store('logos', 'public');
+}
 
     Company::create($validatedData);
 
@@ -46,8 +48,10 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Company $company)
     {
+        $company->load('employees'); 
+
         return view('companies.show', compact('company'));
     }
 

@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class AuthController extends Controller
+{
+    // Show the login form
+    public function showLogin()
+    {
+        return view('auth.login');
+    }
+
+    // Process the login request
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        // Attempt to log the user in
+        if (Auth::attempt($credentials, $request->remember)) {
+            $request->session()->regenerate(); // Prevents session fixation attacks
+
+            return redirect()->intended(route('companies.index'))
+                ->with('success', 'Welcome back, Administrator!');
+        }
+
+        // If login fails, redirect back with an error
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
+
+    // Process the logout request
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->with('success', 'Logged out successfully.');
+    }
+}

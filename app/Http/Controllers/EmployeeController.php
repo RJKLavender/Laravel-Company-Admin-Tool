@@ -24,7 +24,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-         $companies = Company::all();
+        $companies = Company::orderBy('name')->get();
         return view('employees.create', compact('companies'));
     }
 
@@ -42,8 +42,10 @@ class EmployeeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Employee $employee)
     {
+        $employee->load('company'); 
+        
         return view('employees.show', compact('employee'));
     }
 
