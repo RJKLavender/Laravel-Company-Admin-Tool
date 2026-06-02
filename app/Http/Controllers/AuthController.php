@@ -22,11 +22,10 @@ class AuthController extends Controller
         ]);
 
         // Attempt to log the user in
-        if (Auth::attempt($credentials, $request->remember)) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate(); // Prevents session fixation attacks
 
-            return redirect()->intended(route('companies.index'))
-                ->with('success', 'Welcome back, Administrator!');
+            return redirect()->route('home');
         }
 
         // If login fails, redirect back with an error
@@ -43,6 +42,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')->with('success', 'Logged out successfully.');
+        return redirect()->route('login');
     }
 }

@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'List of Companies')
 
 @section('content')
 <div class="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow">
@@ -18,6 +19,7 @@
                 <th class="border p-3 text-left">Name</th>
                 <th class="border p-3 text-left">Email</th>
                 <th class="border p-3 text-left">Website</th>
+                <th class="border p-3 text-center">Employees</th>
                 <th class="border p-3 text-center">Actions</th>
             </tr>
         </thead>
@@ -48,6 +50,12 @@
                         <span class="text-gray-400">-</span>
                     @endif
                 </td>
+                
+                <!-- Real-time Employee Count Column -->
+                <td class="border p-3 text-center font-bold text-gray-700">
+                    {{ $company->employees_count ?? $company->employees->count() }}
+                </td>
+
                 <td class="border p-3 text-center space-x-2">
                     <!-- Added a direct view profile action link -->
                     <a href="{{ route('companies.show', $company->id) }}" class="text-blue-600 hover:underline">View</a>

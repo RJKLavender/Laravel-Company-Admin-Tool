@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Http\Resources\EmployeeResource;
 
-class CompanyApiController extends Controller
+class EmployeeApiController extends Controller
 {
     public function index()
     {

@@ -6,7 +6,8 @@ use App\Models\Employee;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreEmployeeRequest;
-use App\Http\Requests\UpdateEmployeeRequest; 
+use App\Http\Requests\UpdateEmployeeRequest;
+use App\Http\Resources\EmployeeResource;
 
 class EmployeeController extends Controller
 {
@@ -52,10 +53,10 @@ class EmployeeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Employee $employee)
     {
-      $companies = Company::all();
-        return view('employees.edit', compact('employee'), compact('companies'));
+        $companies = Company::orderBy('name')->get();
+        return view('employees.edit', compact('employee', 'companies'));
     }
 
     /**

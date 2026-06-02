@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCompanyRequest;
@@ -16,7 +17,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::paginate(10);
+        $companies = Company::withCount('employees')->paginate(10);
+
         return view('companies.index', compact('companies'));   
     }
 
@@ -58,7 +60,7 @@ class CompanyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Company $company)
     {
         return view('companies.edit', compact('company'));
     }
@@ -83,11 +85,12 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Company $company)
     {
-               if ($company->logo) {
+        if ($company->logo) {
             Storage::disk('public')->delete($company->logo);
         }
+        
         $company->delete();
         return redirect()->route('companies.index')->with('success', 'Company deleted.');
     }
