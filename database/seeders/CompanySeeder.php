@@ -20,11 +20,11 @@ class CompanySeeder extends Seeder
             $existingPath = 'logos/' . $i . '.jpg';
 
             // Passing the array inside create() forces the factory to use this exact value
-            Company::factory()->create([
+            Company::where('id', $i)->update([
                 'logo' => $existingPath,
             ]);
-        }
 
         $this->command->info('Successfully seeded all 15 companies!');
+        }
     }
 }

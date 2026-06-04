@@ -5,9 +5,9 @@ use App\Http\Controllers\Api\EmployeeApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('companies', CompanyApiController::class);
-Route::apiResource('employees', EmployeeApiController::class);
+Route::apiResource('companies', CompanyApiController::class)->names('api.companies');
+Route::apiResource('employees', EmployeeApiController::class)->names('api.employees');
 
-Route::get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
+});

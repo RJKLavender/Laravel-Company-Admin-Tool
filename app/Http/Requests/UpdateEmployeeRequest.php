@@ -23,7 +23,7 @@ class UpdateEmployeeRequest extends FormRequest
      */
     public function rules(): array
     {
-       / Fetches the 'employee' parameter from your route URL: /employees/{employee}
+       // Fetches the 'employee' parameter from your route URL: /employees/{employee}
         $employeeId = $this->route('employee');
 
         return [

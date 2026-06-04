@@ -1,59 +1,128 @@
 @extends('layouts.app')
-@section('title', $employee->first_name . $employee->last_name . 'Employee Profile')
+@section('title', $employee->first_name .' '. $employee->last_name . ' Employee Profile')
 
 @section('content')
-<div class="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Employee Profile</h1>
-        <a href="{{ route('employees.index') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">&larr; Back to Employees</a>
+<style>
+    /* Profile Summary Panel Card */
+    .profile-details-card {
+        background-color: var(--bg-card-grey) !important;
+        border: 1px solid rgba(139, 92, 246, 0.15) !important;
+        border-radius: 12px;
+    }
+
+    .profile-card-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        color: #ffffff !important;
+    }
+
+    /* Subtitle Labels for Data Fields */
+    .field-label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--purple-primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .field-value {
+        font-size: 1.05rem;
+        font-weight: 500;
+        color: var(--text-main);
+    }
+
+    /* Interactive Context Anchor Links */
+    .company-link {
+        color: #38bdf8 !important; /* Premium readable sky blue link */
+        text-decoration: none;
+        font-weight: 600;
+        transition: opacity 0.15s ease;
+    }
+    .company-link:hover {
+        text-decoration: underline !important;
+        opacity: 0.85;
+    }
+
+    .action-link {
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: opacity 0.15s;
+    }
+    .action-link:hover {
+        text-decoration: underline !important;
+        opacity: 0.85;
+    }
+</style>
+
+<div class="container">
+    <!-- Top Nav Action Row -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 fw-bold m-0" style="color: var(--text-main);">Employee Profile</h1>
+        <a href="{{ route('employees.index') }}" class="btn btn-purple px-4 fw-bold">
+            &larr; Back to Employees
+        </a>
     </div>
 
-    <!-- Profile Details Card Grid -->
-    <div class="border border-gray-200 rounded-lg p-6 mb-6 bg-gray-50">
-        <h2 class="text-xl font-semibold text-gray-900 border-b pb-3 mb-4">
+    <!-- Main Profile Details Card Grid -->
+    <div class="profile-details-card p-4 p-md-5 mb-4 shadow-sm">
+        <!-- Card Header displaying the full name -->
+        <h2 class="h4 fw-bold pb-3 mb-4 profile-card-header">
             {{ $employee->first_name }} {{ $employee->last_name }}
         </h2>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
-            <div>
-                <span class="block text-sm font-semibold text-gray-500 uppercase tracking-wider">First Name</span>
-                <span class="text-gray-900 font-medium">{{ $employee->first_name }}</span>
+        <!-- Field Matrix Grid Structure -->
+        <div class="row g-4">
+            <!-- First Name Field -->
+            <div class="col-md-6 col-12">
+                <span class="field-label">First Name</span>
+                <span class="field-value">{{ $employee->first_name }}</span>
             </div>
-            <div>
-                <span class="block text-sm font-semibold text-gray-500 uppercase tracking-wider">Last Name</span>
-                <span class="text-gray-900 font-medium">{{ $employee->last_name }}</span>
+            
+            <!-- Last Name Field -->
+            <div class="col-md-6 col-12">
+                <span class="field-label">Last Name</span>
+                <span class="field-value">{{ $employee->last_name }}</span>
             </div>
-            <div>
-                <span class="block text-sm font-semibold text-gray-500 uppercase tracking-wider">Email Address</span>
-                <span class="text-gray-600">{{ $employee->email ?? '-' }}</span>
+            
+            <!-- Email Address Field -->
+            <div class="col-md-6 col-12">
+                <span class="field-label">Email Address</span>
+                <span class="field-value" style="color: var(--text-muted);">{{ $employee->email ?? '-' }}</span>
             </div>
-            <div>
-                <span class="block text-sm font-semibold text-gray-500 uppercase tracking-wider">Phone Number</span>
-                <span class="text-gray-600">{{ $employee->phone ?? '-' }}</span>
+            
+            <!-- Phone Number Field -->
+            <div class="col-md-6 col-12">
+                <span class="field-label">Phone Number</span>
+                <span class="field-value" style="color: var(--text-muted);">{{ $employee->phone ?? '-' }}</span>
             </div>
-            <div class="md:col-span-2">
-                <span class="block text-sm font-semibold text-gray-500 uppercase tracking-wider">Assigned Company</span>
+            
+            <!-- Company Assignment Field Block -->
+            <div class="col-12 mt-4">
+                <span class="field-label">Assigned Company</span>
                 @if($employee->company)
-                    <a href="{{ route('companies.show', $employee->company->id) }}" class="text-blue-600 hover:underline font-semibold">
-                        {{ $employee->company->name }}
+                    <a href="{{ route('companies.show', $employee->company->id) }}" class="company-link">
+                        💼 {{ $employee->company->name }}
                     </a>
                 @else
-                    <span class="text-gray-400 italic">None</span>
+                    <span class="text-muted opacity-50 italic small">No Company Assigned</span>
                 @endif
             </div>
         </div>
     </div>
 
-    <!-- Management Controls Matching Index Style -->
-    <div class="flex space-x-3 border-t pt-4">
-        <a href="{{ route('employees.edit', $employee->id) }}" class="text-yellow-600 font-semibold hover:underline inline-flex items-center">
+    <!-- Core Level Management Actions Footprint Controls -->
+    <div class="d-flex align-items-center gap-3 border-top pt-4" style="border-color: rgba(255, 255, 255, 0.08) !important;">
+        <a href="{{ route('employees.edit', $employee->id) }}" class="action-link text-warning fw-bold">
             Edit Details
         </a>
-        <span class="text-gray-300">|</span>
-        <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Delete this employee?');">
+        <span class="opacity-25" style="color: var(--text-muted);">|</span>
+        
+        <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Delete this employee?');">
             @csrf 
             @method('DELETE')
-            <button type="submit" class="text-red-600 font-semibold hover:underline">
+            <button type="submit" class="btn btn-link p-0 action-link text-danger fw-bold border-0 align-baseline">
                 Delete Employee
             </button>
         </form>

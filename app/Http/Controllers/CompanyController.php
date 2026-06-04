@@ -40,7 +40,7 @@ class CompanyController extends Controller
     if ($request->hasFile('logo')) {
     // This saves the file directly into: storage/app/public/logos/
     $validatedData['logo'] = $request->file('logo')->store('logos', 'public');
-}
+        }
 
     Company::create($validatedData);
 

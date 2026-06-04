@@ -1,107 +1,134 @@
 @extends('layouts.app')
-@section('title', $company->name . 'Company Profile')
+@section('title', $company->name . ' Company Profile')
 
 @section('content')
-<div class="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Company Profile</h1>
-        <a href="{{ route('companies.index') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">&larr; Back to Companies</a>
+
+<div class="container">
+    <!-- Top Action Navigation Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 fw-bold m-0" style="color: var(--text-main);">Company Profile</h1>
+        <a href="{{ route('companies.index') }}" class="btn btn-purple px-4 fw-bold">
+            &larr; Back to Companies
+        </a>
     </div>
 
-    <!-- Company Meta Details Block -->
-    <div class="border border-gray-200 rounded-lg p-6 mb-8 bg-gray-50 flex flex-col md:flex-row items-start md:items-center gap-6">
-        <div class="flex-shrink-0">
-            @if($company->logo)
-                <img src="{{ asset('storage/' . $company->logo) }}" alt="{{ $company->name }} Logo" width="100" height="100" class="w-24 h-24 object-cover rounded border bg-white p-1">
-            @else
-                <div class="w-24 h-24 bg-gray-200 text-gray-400 rounded border flex items-center justify-center text-xs font-medium">
-                    No Logo
-                </div>
-            @endif
-        </div>
-
-        <div class="flex-grow space-y-2">
-            <h2 class="text-2xl font-bold text-gray-900 mb-1">{{ $company->name }}</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 text-sm">
-                <p class="text-gray-600"><span class="font-semibold text-gray-500">Email:</span> {{ $company->email ?? '-' }}</p>
-                <p class="text-gray-600">
-                    <span class="font-semibold text-gray-500">Website:</span> 
-                    @if($company->website)
-                        <a href="{{ $company->website }}" target="_blank" class="text-blue-600 hover:underline">{{ $company->website }}</a>
-                    @else
-                        -
-                    @endif
-                </p>
-                <p class="text-gray-600 sm:col-span-2 mt-1">
-                    <span class="font-semibold text-gray-500">Total Headcount:</span> 
-                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-0.5 rounded-full">{{ $company->employees->count() }} Registered</span>
-                </p>
+    <!-- Company Meta Details Profile Header Card -->
+    <div class="profile-header-card p-4 mb-5 shadow-sm">
+        <div class="row align-items-center g-4">
+            
+            <!-- Logo Section Column -->
+            <div class="col-auto">
+                @if($company->logo)
+                    <img src="{{ asset('storage/' . $company->logo) }}" alt="{{ $company->name }} Logo" class="profile-logo-bubble shadow">
+                @else
+                    <div class="profile-logo-placeholder">No Logo</div>
+                @endif
             </div>
+
+            <!-- Profile Fields Breakdown Column -->
+            <div class="col-sm col-12">
+                <h2 class="h2 fw-bold text-white mb-2">{{ $company->name }}</h2>
+                
+                <div class="row g-2 text-sm">
+                    <div class="col-md-6">
+                        <span class="fw-bold" style="color: var(--purple-primary);">Email:</span> 
+                        <span style="color: var(--text-muted);">{{ $company->email ?? '-' }}</span>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <span class="fw-bold" style="color: var(--purple-primary);">Website:</span> 
+                        @if($company->website)
+                            <a href="{{ $company->website }}" target="_blank" class="website-link font-medium">
+                                {{ str_replace(['http://', 'https://', 'www.'], '', $company->website) }}
+                            </a>
+                        @else
+                            <span class="text-muted">-</span>
+                        @endif
+                    </div>
+                    
+                    <div class="col-12 mt-2">
+                        <span class="fw-bold" style="color: var(--purple-primary);">Total Headcount:</span> 
+                        <span class="badge rounded-pill px-3 py-1 ms-1" style="background-color: var(--bg-dark-grey); color: #fff; border: 1px solid rgba(139, 92, 246, 0.3);">
+                            {{ $company->employees->count() }} Registered Staff
+                        </span>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- Employee Roster Table Built to Match Index Format -->
-    <div class="mb-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">Assigned Employee Roster</h3>
+    <!-- Employee Roster Context Area -->
+    <div class="mb-5">
+        <h3 class="h5 fw-bold mb-3" style="color: var(--text-main); letter-spacing: 0.5px;">Assigned Employee Roster</h3>
         
         @if($company->employees->isEmpty())
-            <div class="border p-4 text-center text-gray-400 italic rounded">
+            <div class="empty-state-box p-4 text-center italic">
                 No employees are currently assigned to this company.
             </div>
         @else
-            <table class="w-full border-collapse border border-gray-200">
-                <thead>
-                    <tr class="bg-gray-100">
-                        <th class="border p-3 text-left">First Name</th>
-                        <th class="border p-3 text-left">Last Name</th>
-                        <th class="border p-3 text-left">Email</th>
-                        <th class="border p-3 text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($company->employees as $worker)
-                    <tr class="hover:bg-gray-50">
-                        <td class="border p-3 font-semibold">
-                            <a href="{{ route('employees.show', $worker->id) }}" class="text-blue-600 hover:underline">
-                                {{ $worker->first_name }}
-                            </a>
-                        </td>
-                        <td class="border p-3 font-semibold">
-                            <a href="{{ route('employees.show', $worker->id) }}" class="text-blue-600 hover:underline">
-                                {{ $worker->last_name }}
-                            </a>
-                        </td>
-                        <td class="border p-3 text-gray-600">{{ $worker->email ?? '-' }}</td>
-                        <td class="border p-3 text-center">
-                            <!-- Detach action structured using the updated index row style -->
-                            <form action="{{ route('employees.update', $worker->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Remove this employee from the company roster?');">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="first_name" value="{{ $worker->first_name }}">
-                                <input type="hidden" name="last_name" value="{{ $worker->last_name }}">
-                                <input type="hidden" name="company_id" value="">
-                                <button type="submit" class="text-orange-600 hover:underline font-medium">
-                                    Remove Staff
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-dark-custom align-middle shadow-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($company->employees as $worker)
+                        <tr>
+                            <!-- First Name Link -->
+                            <td>
+                                <a href="{{ route('employees.show', $worker->id) }}" class="profile-link fw-bold">
+                                    {{ $worker->first_name }}
+                                </a>
+                            </td>
+                            
+                            <!-- Last Name Link -->
+                            <td>
+                                <a href="{{ route('employees.show', $worker->id) }}" class="profile-link fw-bold">
+                                    {{ $worker->last_name }}
+                                </a>
+                            </td>
+                            
+                            <!-- Worker Email Coordinate -->
+                            <td>{{ $worker->email ?? '-' }}</td>
+                            
+                            <!-- Administrative Action Handlers -->
+                            <td class="text-center">
+                                <form action="{{ route('employees.update', $worker->id) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Remove this employee from the company roster?');">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="first_name" value="{{ $worker->first_name }}">
+                                    <input type="hidden" name="last_name" value="{{ $worker->last_name }}">
+                                    <input type="hidden" name="company_id" value="">
+                                    <button type="submit" class="btn btn-link p-0 action-link text-warning border-0 align-baseline">
+                                        Remove Staff
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         @endif
     </div>
 
-    <!-- Company Level Controls Matching Index Style -->
-    <div class="flex space-x-3 border-t pt-4">
-        <a href="{{ route('companies.edit', $company->id) }}" class="text-yellow-600 font-semibold hover:underline inline-flex items-center">
+    <!-- Company Level Structural Administrative Footprint Controls -->
+    <div class="d-flex align-items-center gap-3 border-top pt-4" style="border-color: rgba(255, 255, 255, 0.08) !important;">
+        <a href="{{ route('companies.edit', $company->id) }}" class="action-link text-warning fw-bold">
             Edit Company
         </a>
-        <span class="text-gray-300">|</span>
-        <form action="{{ route('companies.destroy', $company->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Delete this company? All employees will be unassigned.');">
+        <span class="opacity-25" style="color: var(--text-muted);">|</span>
+        
+        <form action="{{ route('companies.destroy', $company->id) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Delete this company? All employees will be unassigned.');">
             @csrf 
             @method('DELETE')
-            <button type="submit" class="text-red-600 font-semibold hover:underline">
+            <button type="submit" class="btn btn-link p-0 action-link text-danger fw-bold border-0 align-baseline">
                 Delete Company
             </button>
         </form>

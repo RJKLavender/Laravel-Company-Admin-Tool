@@ -16,8 +16,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $companyCount = Company::count();
-        $employeeCount = Employee::count();
-        return view('home', compact('companyCount', 'employeeCount'));
+            // Fetch your counts for the dashboard
+            $companyCount = \App\Models\Company::count();
+            $employeeCount = \App\Models\Employee::count();
+
+            // CORRECT: Return the home view
+            return view('home', compact('companyCount', 'employeeCount'));
     }
 }

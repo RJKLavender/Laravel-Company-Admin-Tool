@@ -26,7 +26,7 @@ class StoreCompanyRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|unique:companies,email',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|dimensions:min_width=100,min_height=100',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=100,min_height=100|max:2048',
             'website' => 'nullable|url',
         ];
     }
@@ -39,8 +39,9 @@ class StoreCompanyRequest extends FormRequest
             'email.email' => 'Please enter a valid email address.',
             'email.unique' => 'This email address is already registered to another company.',
             'logo.image' => 'The uploaded file must be an image.',
-            'logo.mimes' => 'The logo must be a file of type: jpeg, png, jpg, or gif.',
+            'logo.mimes' => 'The logo must be a file of type: jpeg, png, jpg, gif, or svg.',
             'logo.dimensions' => 'The logo must be at least 100x100 pixels in size.',
+            'logo.max' => 'The logo file size must not be larger than 2 Megabytes.',
             'website.url' => 'The website address format is invalid. Make sure it includes http:// or https://.',
         ];
     }

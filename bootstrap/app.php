@@ -11,8 +11,12 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->redirectGuestsTo("/login");
+    ->withMiddleware(function (Middleware $middleware) {
+       
+        $middleware->redirectUsersTo('/home');
+        
+        // Ensure guest redirects go to the standard login
+        $middleware->redirectGuestsTo('/login');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
