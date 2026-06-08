@@ -6,7 +6,7 @@
 <div class="container">
     <!-- Top Action Navigation Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 fw-bold m-0" style="color: var(--text-main);">Company Profile</h1>
+        <h1 class="h2 fw-bold m-0" style="color: var(--text-main);">Company Profile</h1>
         <a href="{{ route('companies.index') }}" class="btn btn-purple px-4 fw-bold">
             &larr; Back to Companies
         </a>
@@ -29,17 +29,17 @@
             <div class="col-sm col-12">
                 <h2 class="h2 fw-bold text-white mb-2">{{ $company->name }}</h2>
                 
-                <div class="row g-2 text-sm">
-                    <div class="col-md-6">
-                        <span class="fw-bold" style="color: var(--purple-primary);">Email:</span> 
-                        <span style="color: var(--text-muted);">{{ $company->email ?? '-' }}</span>
+                <div class="g-2 text-sm">
+                    <div class="col-md-6 mt-2">
+                        <span class="fw-bold fs-5" style="color: var(--purple-primary);">Email:</span> 
+                        <span class=" fs-5" style="color: var(--text-muted);">{{ $company->email ?? '-' }}</span>
                     </div>
                     
-                    <div class="col-md-6">
-                        <span class="fw-bold" style="color: var(--purple-primary);">Website:</span> 
+                    <div class="col-md-6 mt-2">
+                        <span class="fw-bold fs-5 me-2" style="color: var(--purple-primary);">Website:</span> 
                         @if($company->website)
-                            <a href="{{ $company->website }}" target="_blank" class="website-link font-medium">
-                                {{ str_replace(['http://', 'https://', 'www.'], '', $company->website) }}
+                            <a href="{{ $company->website }}" target="_blank" class="website-link font-medium fs-5">
+                               {{ 'www.' . str_replace(['http://', 'https://', 'www.'], '', $company->website)}}
                             </a>
                         @else
                             <span class="text-muted">-</span>
@@ -47,9 +47,9 @@
                     </div>
                     
                     <div class="col-12 mt-2">
-                        <span class="fw-bold" style="color: var(--purple-primary);">Total Headcount:</span> 
-                        <span class="badge rounded-pill px-3 py-1 ms-1" style="background-color: var(--bg-dark-grey); color: #fff; border: 1px solid rgba(139, 92, 246, 0.3);">
-                            {{ $company->employees->count() }} Registered Staff
+                        <span class="fw-bold fs-5" style="color: var(--purple-primary);">Total Number of Employees:</span> 
+                        <span class="badge fs-5 rounded-pill px-3 py-1 ms-1" style="background-color: var(--bg-dark-grey); color: #fff; border: 1px solid rgba(139, 92, 246, 0.3);">
+                            {{ $company->employees->count() }} Staff Employees
                         </span>
                     </div>
                 </div>
@@ -59,12 +59,12 @@
     </div>
 
     <!-- Employee Roster Context Area -->
-    <div class="mb-5">
-        <h3 class="h5 fw-bold mb-3" style="color: var(--text-main); letter-spacing: 0.5px;">Assigned Employee Roster</h3>
+    <div class="mb-2">
+        <h3 class="h4 fw-bold mb-3" style="color: var(--text-main); letter-spacing: 0.5px;">Current Staff Employees</h3>
         
         @if($company->employees->isEmpty())
             <div class="empty-state-box p-4 text-center italic">
-                No employees are currently assigned to this company.
+                This company currently has no staff employees.
             </div>
         @else
             <div class="table-responsive">
@@ -98,15 +98,17 @@
                             <td>{{ $worker->email ?? '-' }}</td>
                             
                             <!-- Administrative Action Handlers -->
-                            <td class="text-center">
+                            <td class="text-center flex-row justify-content-center d-sm-flex">
+                                 <a href="{{ route('companies.show', $company->id) }}" class="action-link text-info px-2">View</a>
+                                <a href="{{ route('companies.edit', $company->id) }}" class="action-link px-2 text-warning">Edit</a>
                                 <form action="{{ route('employees.update', $worker->id) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Remove this employee from the company roster?');">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="first_name" value="{{ $worker->first_name }}">
                                     <input type="hidden" name="last_name" value="{{ $worker->last_name }}">
                                     <input type="hidden" name="company_id" value="">
-                                    <button type="submit" class="btn btn-link p-0 action-link text-warning border-0 align-baseline">
-                                        Remove Staff
+                                    <button type="submit" class="btn btn-link p-0 action-link px-2 text-danger border-0 align-baseline">
+                                        Remove
                                     </button>
                                 </form>
                             </td>
@@ -119,7 +121,7 @@
     </div>
 
     <!-- Company Level Structural Administrative Footprint Controls -->
-    <div class="d-flex align-items-center gap-3 border-top pt-4" style="border-color: rgba(255, 255, 255, 0.08) !important;">
+    <div class="d-flex align-items-center gap-3 pt-2">
         <a href="{{ route('companies.edit', $company->id) }}" class="action-link text-warning fw-bold">
             Edit Company
         </a>

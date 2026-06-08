@@ -1,58 +1,75 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+How to run this project 
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+In order to run this project you will of already needed to create a new laravel project and compuser installed into that project folder
+You will need to set the project name to "Company Admin Tool" and make sure your database is set to sql lite
+lastly you will need to install bootstrap following the instructions in the readme here https://github.com/laravel/ui
 
-## About Laravel
+Once that is done you may copy these downloaded files to your project folder and overwrite all the files
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+You will need a enviroment installed I used Herd for mine.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Then you will need to open up a terminal and run the following commands to the same project folder location (nagvigate using command cd)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+php artisan migrate
 
-## Learning Laravel
+php artisan db:seed --class=DatabaseSeeder
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+php artisan db:seed --class=CompanySeeder 
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+In order for the above command to work you need to make sure the images are in the directory storage/app/public/logos
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+then in order to run the tool in your browser you will need two terminals open and type the following command in the first terminal
 
-## Agentic Development
+php artisan serve
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+and this commands in the second terminal
 
-```bash
-composer require laravel/boost --dev
+npm install
 
-php artisan boost:install
-```
+npm run dev
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+if either of the commands above won't run replace npm with npm.cmd to bypass scripts protection
 
-## Contributing
+now in order to  allow the form to upload images or the edit form to change images you will need to update for php.ini file within the directory of C:/users/(your name)/.config/herd/.bin/(php version folder mine was php84)/php.ini
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+once you have found the file right click and edit it with notepad
 
-## Code of Conduct
+you will need to scroll through the file and find the following sections to update
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+; Maximum size of POST data that PHP will accept.
+; Its value may be 0 to disable the limit. It is ignored if POST data reading
+; is disabled through enable_post_data_reading.
+; https://php.net/post-max-size
+post_max_size = 32M 
 
-## Security Vulnerabilities
+make sure the post_max_size is set to 32M
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+; Whether to allow HTTP file uploads.
+; https://php.net/file-uploads
+file_uploads = On
 
-## License
+make sure file_uploads is set to On
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+; Temporary directory for HTTP uploaded files (will use system default if not
+; specified).
+; https://php.net/upload-tmp-dir
+upload_tmp_dir = ""
+
+make sure upload_tmp_dir is set to the directory of your logos folder
+
+; Maximum allowed size for uploaded files.
+; https://php.net/upload-max-filesize
+upload_max_filesize = 32M
+
+make sure upload_max_filesize is set to 32M
+
+and then if you want to can  increase the max number of file uploads 
+
+; Maximum number of files that can be uploaded via a single request
+max_file_uploads = 20
+
+Once all the above is edited and updated save the file and re run your php artisan serve and npm run dev terminals 
+
+And then you can test the projec from here.
+
+Hope you like the Admin tool I have created.

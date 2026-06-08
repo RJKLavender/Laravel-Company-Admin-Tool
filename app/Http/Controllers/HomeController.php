@@ -10,17 +10,16 @@ class HomeController extends Controller
 {
    
      /**
-     * Show the application dashboard.
+     * Shows the home page view
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
-            // Fetch your counts for the dashboard
+            // Fetchs the counts of how many employees and companies are currently in database
             $companyCount = \App\Models\Company::count();
             $employeeCount = \App\Models\Employee::count();
-
-            // CORRECT: Return the home view
+            
             return view('home', compact('companyCount', 'employeeCount'));
     }
 }

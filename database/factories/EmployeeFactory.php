@@ -15,6 +15,7 @@ class EmployeeFactory extends Factory
        return [
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
+            
             // Automatically creates a company record to link this employee to
             'company_id' => Company::factory(), 
             'email' => $this->faker->unique()->safeEmail(),

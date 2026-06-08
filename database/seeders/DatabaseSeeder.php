@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-       
+       // seeds the admin user login info
         User::updateOrCreate(
             ['email' => 'admin@admin.com'],
             [
@@ -26,13 +26,12 @@ class DatabaseSeeder extends Seeder
             ]
         ); 
 
-       
+        // runs the factories when seeded 
         $companies = Company::factory(15)->create();
 
-       
         Employee::factory(30)->create([
             'company_id' => function () use ($companies) {
-                return $companies->random()->id;
+                return $companies->random()->id; // assigns each employee to a company randomly
             }
         ]);
     } 

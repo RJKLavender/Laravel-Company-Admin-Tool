@@ -47,7 +47,6 @@ body {
 /* Smooth Underline Hover Effect for Desktop  */
 @media (min-width: 768px) {
 
-    /* Added :not(.btn-purple) here to stop it from underlining the login button */
     .navbar-nav .nav-link:not(#navbarDropdown):not(.btn-purple)::after {
         content: '';
         position: absolute;
@@ -75,9 +74,27 @@ body {
 .navbar-nav .nav-link:hover {
     color: #ffffff !important;
 }
+
 .navbar-nav .nav-link.active {
     color: #ffffff !important;
     font-weight: 700 !important;
+}
+
+.navbar-nav .nav-link.active::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--purple-primary);
+    transform-origin: bottom left;
+    transition: transform 0.15s ease-in-out;
+    transform: scaleX(1) !important;
+}
+
+.navbar-nav .nav-link.active:hover::after {
+     transform: scaleX(0) !important;
 }
 
 /* Admin User Drop Down Menu Styling */
@@ -411,6 +428,47 @@ input:-webkit-autofill:focus {
     text-align: center;
 }
 
+/* Profile Summary Panel Card */
+.profile-details-card {
+    background-color: var(--bg-card-grey) !important;
+    border: 1px solid rgba(139, 92, 246, 0.15) !important;
+    border-radius: 12px;
+}
+
+.profile-card-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+/* Subtitle Labels */
+.field-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--purple-primary);
+    margin-bottom: 0.25rem;
+}
+
+.field-value {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+/*Company Links */
+.company-link {
+    color: #38bdf8 !important; 
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.15s ease;
+}
+.company-link:hover {
+    text-decoration: underline !important;
+    opacity: 0.85;
+}
+
 /* Profile Pages Styling */
 .profile-link {
     color: var(--text-main) !important;
@@ -452,7 +510,7 @@ input:-webkit-autofill:focus {
     font-weight: 600;
 }
 
-/* Action Links Layout configuration */
+/* Action Links Layout Styling */
 .action-link {
     font-size: 0.9rem;
     font-weight: 600;
@@ -466,7 +524,7 @@ input:-webkit-autofill:focus {
     opacity: 0.85;
 }
 
-/* Dark Theme Pagination Overrides */
+/* Pagination Styling */
 .pagination .page-link {
     background-color: var(--bg-card-grey) !important;
     border-color: #2d2d35 !important;
@@ -590,6 +648,8 @@ input:-webkit-autofill:focus {
     font-weight: 500;
 }
 
+
+
 </style>
 </head>
 <body>
@@ -597,7 +657,7 @@ input:-webkit-autofill:focus {
         <!-- Modernized Dark Grey & Purple Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: var(--bg-card-grey);">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="{{ url('/') }}">
+        <a class="navbar-brand fw-bold me-4" href="{{ url('/') }}">
             <span style="color: var(--purple-primary);">★</span> {{ config('app.name', 'AdminTool') }}
         </a>
 
@@ -610,10 +670,10 @@ input:-webkit-autofill:focus {
             <ul class="navbar-nav me-auto">
                 @auth
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('companies.*') ? 'active' : '' }}" href="{{ route('companies.index') }}">Companies</a>
+                        <a class="nav-link me-4 fs-4 {{ request()->routeIs('companies.*') ? 'active' : '' }}" href="{{ route('companies.index') }}">Companies</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('employees.*') ? 'active' : '' }}" href="{{ route('employees.index') }}">Employees</a>
+                        <a class="nav-link fs-4 {{ request()->routeIs('employees.*') ? 'active' : '' }}" href="{{ route('employees.index') }}">Employees</a>
                     </li>
                 @endauth
             </ul>
@@ -647,7 +707,7 @@ input:-webkit-autofill:focus {
         </main>
     </div>
 
-     <footer class="footer mt-auto py-3 bg-dark border-top border-secondary">
+     <footer class="footer mt-4 py-3 bg-dark border-top border-secondary">
         <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center text-center text-sm-start gap-2">
             <!-- Copyright Section -->
             <span class="text-secondary small text-white-50 fs-6">

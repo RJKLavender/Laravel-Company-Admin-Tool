@@ -18,7 +18,7 @@ class CompanyFactory extends Factory
         return [
             'name' => $this->faker->company(),
             'email' => $this->faker->unique()->companyEmail(),
-            'logo' => null,
+            'logo' => null,  //Logo is populated from seeder with logos found in storage 
             'website' => $this->faker->url(),
         ];
     }

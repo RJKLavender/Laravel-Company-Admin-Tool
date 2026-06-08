@@ -82,7 +82,7 @@
                             <form action="{{ route('companies.destroy', $company->id) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Delete this company? All employees will be unassigned.');">
                                 @csrf 
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-link p-0 action-link text-danger border-0 align-baseline">Delete</button>
+                                <button type="submit" class="btn btn-link p-0 action-link text-danger border-0 align-baseline">Remove</button>
                             </form>
                         </div>
                     </td>

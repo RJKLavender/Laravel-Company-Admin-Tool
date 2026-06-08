@@ -13,7 +13,7 @@ use App\Http\Resources\CompanyResource;
 class CompanyController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a view containing a list of companies with 10 per page
      */
     public function index()
     {
@@ -23,7 +23,7 @@ class CompanyController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Shows a form view in order to add a company
      */
     public function create()
     {
@@ -31,8 +31,8 @@ class CompanyController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
+     * Stores a new companie details to database 
+    */
     public function store(StoreCompanyRequest $request)
     {
         $validatedData = $request->validated(); // Contains only verified fields
@@ -41,24 +41,24 @@ class CompanyController extends Controller
     // This saves the file directly into: storage/app/public/logos/
     $validatedData['logo'] = $request->file('logo')->store('logos', 'public');
         }
-
+    
     Company::create($validatedData);
-
+    // returns the view with success message
     return redirect()->route('companies.index')->with('success', 'Company created successfully.');
     }
 
     /**
-     * Display the specified resource.
+     * Displays the chosen company's profile view 
      */
     public function show(Company $company)
     {
-        $company->load('employees'); 
+        $company->load('employees'); //pulls employees details that are staff at that company
 
         return view('companies.show', compact('company'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Shows a form for editing company details 
      */
     public function edit(Company $company)
     {
@@ -66,32 +66,34 @@ class CompanyController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Updates the newly edited company details to database
      */
     public function update(UpdateCompanyRequest $request, Company $company)
     {
         $validatedData = $request->validated();
 
     if ($request->hasFile('logo')) {
-        // Optional: Delete old logo file from storage here before saving the new one
+        // switchs logos and stores new logo to storage
         $validatedData['logo'] = $request->file('logo')->store('logos', 'public');
     }
 
     $company->update($validatedData);
-
+// returns the view with success message
     return redirect()->route('companies.index')->with('success', 'Company updated successfully.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Deletes the company from the database
      */
     public function destroy(Company $company)
     {
+        //deletes the logo from storage
         if ($company->logo) {
             Storage::disk('public')->delete($company->logo);
         }
         
+        //deletes the company from the database and supplys success message.
         $company->delete();
-        return redirect()->route('companies.index')->with('success', 'Company deleted.');
+        return redirect()->route('companies.index')->with('success', 'Company successfuly deleted.');
     }
 }

@@ -13,8 +13,8 @@ return new class extends Migration
 {
     Schema::create('employees', function (Blueprint $table) {
         $table->id();
-        $table->string('first_name'); // Required by default
-        $table->string('last_name');  // Required by default
+        $table->string('first_name'); 
+        $table->string('last_name');  
         
         // Foreign key linking to the companies table
         $table->foreignId('company_id')

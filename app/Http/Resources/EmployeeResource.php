@@ -8,7 +8,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class EmployeeResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * this displays the rescource file for the employee json file 
+     * Converts the database entries into an array ready to ouput to the view.
      *
      * @return array<string, mixed>
      */

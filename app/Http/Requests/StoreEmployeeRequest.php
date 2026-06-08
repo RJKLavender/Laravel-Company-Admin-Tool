@@ -16,7 +16,7 @@ class StoreEmployeeRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Get the validation rules that apply to the request of adding an employee to the database.
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
@@ -30,12 +30,16 @@ class StoreEmployeeRequest extends FormRequest
             'phone' => 'nullable|string|max:20',
         ];
     }
-
+        // Error messages for the above rules failing validation
       public function messages(): array
     {
         return [
-            'company_id.required' => 'You must select a company for this employee.',
+            'company_id.required' => 'You must select a valid company for this employee.',
             'company_id.exists' => 'The selected company is invalid.',
+            'first_name.required' => 'first name is required.',
+            'last_name.required' => 'last name is required.',
+            'first_name.max' => 'First name cannot exceed 255 characters.',
+            'last_name.max' => 'Last name cannot exceed 255 characters.',
         ];
     }
 }

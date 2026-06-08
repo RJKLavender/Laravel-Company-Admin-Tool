@@ -12,7 +12,7 @@ use App\Http\Resources\EmployeeResource;
 class EmployeeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Displays a list of employees with 10 per page
      */
     public function index()
     {
@@ -21,16 +21,16 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Shows a form for adding a employee to the database
      */
     public function create()
     {
-        $companies = Company::orderBy('name')->get();
+        $companies = Company::orderBy('name')->get(); //adds companies into a dropdown menu to select which company this new employee belongs to.
         return view('employees.create', compact('companies'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Stores the new employee details to the database
      */
     public function store(StoreEmployeeRequest $request)
     {
@@ -41,17 +41,17 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Displays the employee's profile
      */
     public function show(Employee $employee)
     {
-        $employee->load('company'); 
+        $employee->load('company'); //loads the company details of which company this employee belongs to
         
         return view('employees.show', compact('employee'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Shows a form for editing the employee details 
      */
     public function edit(Employee $employee)
     {
@@ -60,17 +60,19 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the employee's details within the database
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        // The request runs validation automatically before this code block starts.
+       
     $employee->update($request->validated());
 
     return redirect()->route('employees.index')->with('success', 'Employee data updated successfully.');
-
     }
 
+    /*
+    * Deletes the employee from the database
+    */
     public function destroy(Employee $employee)
     {
         $employee->delete();
