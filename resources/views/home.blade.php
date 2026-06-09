@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <!-- Removed all default Bootstrap background classes -->
+            <!-- Home Directory Card Infomation -->
             <div class="card dashboard-card mt-4 shadow-lg">
                 <div class="card-header dashboard-header">
                     {{ __('Home Directory') }}
@@ -24,13 +24,13 @@
 
                     <hr style="border-color: rgba(255,255,255,0.1); margin: 1rem 0;">
 
-                    {{-- Database Records Counter Cards --}}
+                    {{-- Database Records Count Cards --}}
                     <h3 class="h6 mb-4 text-uppercase tracking-widest" style="color: var(--purple-primary); font-weight: 700;">
                         Current Total Company and Staff Figures
                     </h3>
                     
                     <div class="row g-4 text-center">
-                        <!-- Companies Metric -->
+                        <!-- Companies Metric Container -->
                         <div class="col-sm-6">
                             <div class="metric-box p-4">
                                 <div class="text-uppercase tracking-wider font-weight-bold small mb-3" style="color: var(--text-muted);">Total Companies</div>
@@ -41,7 +41,7 @@
                             </div>
                         </div>
 
-                        <!-- Employees Metric -->
+                        <!-- Employees Metric Container -->
                         <div class="col-sm-6">
                             <div class="metric-box p-4">
                                 <div class="text-uppercase tracking-wider font-weight-bold small mb-3" style="color: var(--text-muted);">Total Employees</div>

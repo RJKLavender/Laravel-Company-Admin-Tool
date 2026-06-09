@@ -17,8 +17,10 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
 <style>
+
 /* Custom Theme Styling over the top of Bootstrap */
 /* Base Styling */
+/* Variables */
 :root {
     --bg-dark-grey: #121214;
     --bg-card-grey: #1e1e24;
@@ -37,7 +39,7 @@ body {
 
 /* Navigation Styling  */
 .navbar-nav .nav-link {
-    color: var(--text-muted) !important;
+    color: #ffffff !important;
     font-weight: 500;
     position: relative;
     transition: color 0.15s ease-in-out;
@@ -47,7 +49,8 @@ body {
 /* Smooth Underline Hover Effect for Desktop  */
 @media (min-width: 768px) {
 
-    .navbar-nav .nav-link:not(#navbarDropdown):not(.btn-purple)::after {
+    /* :not is used to make sure the admin drop down menu is not affected by this styling */
+    .navbar-nav .nav-link:not(#navbarDropdown)::after {
         content: '';
         position: absolute;
         width: 100%;
@@ -59,8 +62,9 @@ body {
         transform-origin: bottom left;
         transition: transform 0.15s ease-in-out;
     }
-
-    .navbar-nav .nav-link:not(#navbarDropdown):not(.btn-purple):hover::after {
+    
+    /* underline appears on hover for the page your not on */
+    .navbar-nav .nav-link:not(#navbarDropdown):hover::after {
         transform: scaleX(1);
     }
 
@@ -71,12 +75,7 @@ body {
 }
 
 /* Hover and Active Text Colours for Navbar */
-.navbar-nav .nav-link:hover {
-    color: #ffffff !important;
-}
-
 .navbar-nav .nav-link.active {
-    color: #ffffff !important;
     font-weight: 700 !important;
 }
 
@@ -93,6 +92,7 @@ body {
     transform: scaleX(1) !important;
 }
 
+/* Underline goes away on hover for active page */
 .navbar-nav .nav-link.active:hover::after {
      transform: scaleX(0) !important;
 }
@@ -111,9 +111,9 @@ body {
     background-color: var(--bg-card-grey) !important;
     opacity: 1 !important;
     border: 1px solid rgba(139, 92, 246, 0.3) !important;
-    padding: 0.6rem 0 !important; /* Vertical spacing inside the box */
+    padding: 0.6rem 0 !important; 
     
-    /* These lines lock the width to the parent button */
+    /* These lines lock the width of the drop down items to the parent item */
     width: 100% !important; 
     min-width: 100% !important;
     left: 0 !important;
@@ -124,9 +124,9 @@ body {
 
 /* Logout Link Styling */
 .dropdown-menu-dark-custom .logout-link {
-    color: var(--text-muted) !important;
+    color: #ffffff !important;
     display: inline-block !important; 
-    width: auto !important; /* Keeps the underline strictly under the text */
+    width: auto !important; 
     background: transparent !important;
     padding: 0 !important;
     position: relative;
@@ -134,11 +134,7 @@ body {
     transition: color 0.15s ease-in-out;
 }
 
-.dropdown-menu-dark-custom .logout-link:hover {
-    color: #ffffff !important;
-}
-
-/* Underline matching the text length */
+/* Underline on hover to match the navigation bar */
 .dropdown-menu-dark-custom .logout-link::after {
     content: '';
     position: absolute;
@@ -184,7 +180,7 @@ body {
     color: white !important;
 }
 
-/* Hamburger styling for phones */
+/* Hamburger styling for Phones */
 .navbar-toggler {
     border-color: rgba(139, 92, 246, 0.4) !important;
     padding: 0.6rem !important;
@@ -222,7 +218,6 @@ body {
     border-color: var(--purple-primary) !important;
 }
 
-
 .navbar-toggler:active {
     background-color: rgba(139, 92, 246, 0.1) !important;
     transform: scale(0.98); 
@@ -236,6 +231,7 @@ body {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
+/* Card Header for Login */
 .login-header {
     background-color: rgba(139, 92, 246, 0.1) !important;
     color: var(--purple-primary);
@@ -273,26 +269,6 @@ body {
     outline: none;
 }
 
-.forgot-link {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.15s;
-}
-
-.forgot-link:hover {
-        color: var(--purple-primary);
-}
-
-    input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px var(--bg-dark-grey) inset !important;
-    -webkit-text-fill-color: white !important;
-    transition: background-color 5000s ease-in-out 0s;
-}
-
 .form-control {
     /* Medium-dark charcoal (Lighter than background, darker than slate) */
     background-color: #334155 !important; 
@@ -311,6 +287,21 @@ input:-webkit-autofill:active {
     color: #ffffff !important;
 }
 
+::placeholder {
+    color: #94a3b8 !important;
+    opacity: 0.8;
+}
+
+/* Browser override for inputs */
+    input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-dark-grey) inset !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus {
@@ -318,17 +309,13 @@ input:-webkit-autofill:focus {
     -webkit-text-fill-color: #ffffff !important;
 }
 
-::placeholder {
-    color: #94a3b8 !important;
-    opacity: 0.8;
-}
-
 /* Home Page Styling */
 .dashboard-card {
     background-color: var(--bg-card-grey) !important;
     border: 1px solid rgba(139, 92, 246, 0.15) !important;
 }
-  
+
+/* Home Page Card Header */
 .dashboard-header {
     background-color: rgba(139, 92, 246, 0.05) !important;
     color: var(--purple-primary) !important;
@@ -339,7 +326,7 @@ input:-webkit-autofill:focus {
     padding-left: 50px;
 }
 
-/* this box handles the counts of employees and companies on home page */
+/* This box handles the styling for the counts of employees and companies on home page */
 .metric-box {
     background-color: var(--bg-dark-grey) !important;
     border: 1px solid rgba(139, 92, 246, 0.15) !important;
@@ -352,6 +339,7 @@ input:-webkit-autofill:focus {
     border-color: var(--purple-primary) !important;
 }
 
+/* Manage Companies and Employees Buttons */
 .btn-metric-primary {
     background-color: #0d6efd !important;
     color: #ffffff !important;
@@ -394,6 +382,7 @@ input:-webkit-autofill:focus {
     border-spacing: 0 6px; /* Clean gap row separation spacing */
 }
 
+/* Table Headers */
 .table-dark-custom thead th {
     background-color: rgba(139, 92, 246, 0.08) !important;
     color: var(--purple-primary);
@@ -407,19 +396,14 @@ input:-webkit-autofill:focus {
     font-weight: 600;
 }
 
+/* Table Rows */
 .table-dark-custom tbody tr {
     background-color: var(--bg-card-grey);
     transition: transform 0.15s ease-in-out, background-color 0.15s;
 }
 
-.company-logo-frame {
-    width:150px;
-    height:150px;
-    border-radius:10px;
-}
-
+/* Table Cells */
 .table-dark-custom td {
-    color: var(--text-muted);
     padding: 1.1rem 1rem;
     vertical-align: middle;
     border-top: 1px solid rgba(255, 255, 255, 0.04);
@@ -428,8 +412,15 @@ input:-webkit-autofill:focus {
     text-align: center;
 }
 
+/* Logo diemensions for table */
+.company-logo-frame {
+    width:150px;
+    height:150px;
+    border-radius:10px;
+}
+
 /* Profile Summary Panel Card */
-.profile-details-card {
+.profile-details-card, .profile-header-card {
     background-color: var(--bg-card-grey) !important;
     border: 1px solid rgba(139, 92, 246, 0.15) !important;
     border-radius: 12px;
@@ -464,12 +455,13 @@ input:-webkit-autofill:focus {
     font-weight: 600;
     transition: opacity 0.15s ease;
 }
+
 .company-link:hover {
     text-decoration: underline !important;
     opacity: 0.85;
 }
 
-/* Profile Pages Styling */
+/* Profile Links Styling */
 .profile-link {
     color: var(--text-main) !important;
     text-decoration: none;
@@ -481,12 +473,7 @@ input:-webkit-autofill:focus {
     text-decoration: underline !important;
 }
 
-.profile-header-card {
-    background-color: var(--bg-card-grey) !important;
-    border: 1px solid rgba(139, 92, 246, 0.15) !important;
-    border-radius: 12px;
-}
-
+/* Company Logo box for their profile page */
 .profile-logo-bubble {
     width: 96px;
     height: 96px;
@@ -577,15 +564,11 @@ input:-webkit-autofill:focus {
 
 .form-control::file-selector-button {
     margin: 0.1rem 0.1rem; !important;
-
 }
 
-.form-control-file-custom::file-selector-button {
+.form-control-file-custom::file-selector-button, 
+.form-control-file-custom::-webkit-file-upload-button  {
     margin-right: 8px; 
-}
-
-.form-control-file-custom::-webkit-file-upload-button {
-    margin-right: 8px;
 }
 
 .form-control-file-custom::-webkit-file-upload-button:hover {
@@ -618,6 +601,7 @@ input:-webkit-autofill:focus {
     border-color: #94a3b8;
 }
 
+/*Website Link Styling */
 .website-link {
     color: #38bdf8 !important;
     text-decoration: none;
@@ -648,25 +632,23 @@ input:-webkit-autofill:focus {
     font-weight: 500;
 }
 
-
-
 </style>
 </head>
-<body>
-    <div id="app">
-        <!-- Modernized Dark Grey & Purple Navbar -->
+<body class="d-flex flex-column min-vh-100">
+    <div id="app" class="flex-grow-1">
+        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: var(--bg-card-grey);">
     <div class="container">
         <a class="navbar-brand fw-bold me-4" href="{{ url('/') }}">
             <span style="color: var(--purple-primary);">★</span> {{ config('app.name', 'AdminTool') }}
         </a>
-
+        <!-- Hamburger Button -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
+        <!-- Only Authenticated users will see these Nav Items  -->
         <div class="collapse navbar-collapse" id="navContent">
-            <!-- Left Side -->
+            <!-- Left Nav Items-->
             <ul class="navbar-nav me-auto">
                 @auth
                     <li class="nav-item">
@@ -678,12 +660,13 @@ input:-webkit-autofill:focus {
                 @endauth
             </ul>
 
-            <!-- Right Side -->
+            <!-- Right Nav Items -->
             <ul class="navbar-nav ms-auto">
                 @guest
                     <li class="nav-item">
                     </li>
                 @else
+                <!-- Admin User Controls (Logout) Displayed as a Dropdown Menu -->
                     <li class="nav-item dropdown admin-user-nav-item">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle py-2 px-3 border border-secondary rounded-3 text-center" href="#" role="button" data-bs-toggle="dropdown">
                             <span class="me-1" style="color: var(--purple-primary);">●</span> {{ Auth::user()->name }}
@@ -707,6 +690,7 @@ input:-webkit-autofill:focus {
         </main>
     </div>
 
+    <!-- Copyright Footer -->
      <footer class="footer mt-4 py-3 bg-dark border-top border-secondary">
         <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center text-center text-sm-start gap-2">
             <!-- Copyright Section -->
@@ -715,6 +699,7 @@ input:-webkit-autofill:focus {
             </span>
 
             <!-- Dynamic API Link Buttons -->
+            <!-- Checks which page your on to show relevant JSON Button Link -->
             @auth
                 <div>
                     @if(request()->routeIs('companies.*'))

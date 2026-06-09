@@ -22,7 +22,7 @@ class AuthController extends Controller
         ]);
 
         // Attempt to log the user in
-        if (Auth::attempt($credentials))) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate(); // Prevents session fixation attacks
 
             return redirect()->route('home');
@@ -30,7 +30,7 @@ class AuthController extends Controller
 
         // If login fails, redirect back with an error
         return back()->withErrors([
-            'email' => 'Your email and password don't match our records'
+            'email' => 'Your email and password does not match our records',
         ])->onlyInput('email');
     }
 

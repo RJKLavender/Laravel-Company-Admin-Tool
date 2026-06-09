@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 
 // Guest Routes (Login handling)
+// Forces upon opening page to go to the login view
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
         return redirect()->route('login');
@@ -17,15 +18,17 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [AuthController::class, 'login']); 
 });
 
-// Authenticated Dashboard & Directory Views
+// Authenticated users can access the routes below for home,logout and the rescourse controllers
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
+    //Rescource Controllers for companies and employees
     Route::resource('companies', CompanyController::class);
     Route::resource('employees', EmployeeController::class);
 });
 
+    //test route to check php ini file is congifired currectly 
 Route::get('/php-test', function () {
     echo 'Active php.ini: ' . php_ini_loaded_file() . '<br>';
     echo 'upload_max_filesize: ' . ini_get('upload_max_filesize') . '<br>';

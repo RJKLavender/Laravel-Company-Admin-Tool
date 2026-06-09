@@ -2,15 +2,12 @@
 @section('title', 'Add a Company')
 
 @section('content')
-<
-
 <div class="container">
     <div class="row justify-content-center">
        
         <div class="col-md-8">
-            
             <div class="form-container-card p-5 py-md-4 mt-4 shadow-lg">
-                <!-- Header Component -->
+                <!-- Header -->
                 <div class="mb-4">
                     <h1 class="h3 fw-bold m-0" style="color: var(--purple-hover);">Add New Company</h1>
                 </div>
@@ -20,6 +17,7 @@
                     <div class="alert dark-error-alert p-4 mb-4 shadow-sm" role="alert">
                         <div class="fw-bold mb-1">Please correct the errors below:</div>
                         <ul class="mb-0 ps-3">
+                            <!-- Loops through all Form Errors -->
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
@@ -27,11 +25,11 @@
                     </div>
                 @endif
 
-                <!-- Data Form (Enctype retained for logo uploads) -->
+                <!-- Add Company Form Enctype Used for Logo Directory -->
                 <form action="{{ route('companies.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
-                    <!-- Company Name Input -->
+                    <!-- Company Name -->
                     <div class="mb-3">
                         <label for="name" class="form-label form-label-custom">Company Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name') }}" 
@@ -42,7 +40,7 @@
                         @enderror
                     </div>
 
-                    <!-- Email Address Input -->
+                    <!-- Email Address -->
                     <div class="mb-3">
                         <label for="email" class="form-label form-label-custom">Email Address</label>
                         <input type="email" name="email" id="email" value="{{ old('email') }}" 
@@ -53,7 +51,7 @@
                         @enderror
                     </div>
 
-                    <!-- Website URL Input -->
+                    <!-- Website URL -->
                     <div class="mb-3">
                         <label for="website" class="form-label form-label-custom">Website URL</label>
                         <input type="url" name="website" id="website" value="{{ old('website') }}" 
@@ -64,7 +62,7 @@
                         @enderror
                     </div>
 
-                    <!-- File Selector Logo Input -->
+                    <!-- Logo File Selector -->
                     <div class="mb-3">
                         <label for="logo" class="form-label form-label-custom">Company Logo</label>
                         <input type="file" name="logo" id="logo" 
@@ -75,7 +73,7 @@
                         @enderror
                     </div>
 
-                    <!-- Bottom Navigation Form Action Anchors -->
+                    <!-- Save Company and Cancel Buttons -->
                     <div class="d-flex justify-content-center align-items-center gap-2 pt-2">
                         <button type="submit" class="btn btn-purple px-4 py-2 fw-bold">
                             Save Company
@@ -85,7 +83,6 @@
                         </a>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>

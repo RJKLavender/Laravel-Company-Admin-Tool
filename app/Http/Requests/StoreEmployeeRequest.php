@@ -27,7 +27,7 @@ class StoreEmployeeRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'company_id' => 'required|exists:companies,id', // Must match an existing company ID
             'email' => 'nullable|email|unique:employees,email',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:20|phone:GB,AUTO',
         ];
     }
         // Error messages for the above rules failing validation
@@ -36,10 +36,13 @@ class StoreEmployeeRequest extends FormRequest
         return [
             'company_id.required' => 'You must select a valid company for this employee.',
             'company_id.exists' => 'The selected company is invalid.',
-            'first_name.required' => 'first name is required.',
-            'last_name.required' => 'last name is required.',
-            'first_name.max' => 'First name cannot exceed 255 characters.',
-            'last_name.max' => 'Last name cannot exceed 255 characters.',
+            'first_name.required' => 'First Name is required.',
+            'last_name.required' => 'Last Name is required.',
+            'first_name.max' => 'First Name cannot exceed 255 characters.',
+            'last_name.max' => 'Last Name cannot exceed 255 characters.',
+            'email.email' => 'Please enter a valid email address.',
+            'email.unique' => 'This email address is already assigned to another employee.',
+            'phone.phone' => 'Please Enter a Valid Phone Number'
         ];
     }
 }

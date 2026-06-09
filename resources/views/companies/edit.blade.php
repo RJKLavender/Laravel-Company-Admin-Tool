@@ -8,14 +8,14 @@
         <div class="col-md-8">
             
             <div class="form-container-card p-5 py-md-4 mt-4 shadow-lg">
-                <!-- Header Component -->
+                <!-- Header -->
                 <div class="mb-4">
                     <h1 class="h3 fw-bold m-0" style="color: var(--purple-primary);">
                         Edit Company: <span style="color: var(--purple-primary);">{{ $company->name }}</span>
                     </h1>
                 </div>
 
-                <!-- Error Alert Block -->
+                <!-- Error Alert Block (works the same as the create view) -->
                 @if ($errors->any())
                     <div class="alert dark-error-alert p-4 mb-4 shadow-sm" role="alert">
                         <div class="fw-bold mb-1">Please correct the errors below:</div>
@@ -27,12 +27,12 @@
                     </div>
                 @endif
 
-                <!-- Data Form (Enctype + PUT method explicitly retained) -->
+                <!-- Edit Company Form (Enctype + PUT method explicitly retained) -->
                 <form action="{{ route('companies.update', $company->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
-                    <!-- Company Name Input -->
+                    <!-- Company Name -->
                     <div class="mb-3">
                         <label for="name" class="form-label form-label-custom">Company Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name', $company->name) }}" 
@@ -42,7 +42,7 @@
                         @enderror
                     </div>
 
-                    <!-- Email Address Input -->
+                    <!-- Email Address -->
                     <div class="mb-3">
                         <label for="email" class="form-label form-label-custom">Email Address</label>
                         <input type="email" name="email" id="email" value="{{ old('email', $company->email) }}" 
@@ -52,7 +52,7 @@
                         @enderror
                     </div>
 
-                    <!-- Website URL Input -->
+                    <!-- Website URL -->
                     <div class="mb-3">
                         <label for="website" class="form-label form-label-custom">Website URL</label>
                         <input type="url" name="website" id="website" value="{{ old('website', $company->website) }}" 
@@ -62,7 +62,7 @@
                         @enderror
                     </div>
 
-                    <!-- File Selector Logo Input with Inline Thumbnail Preview -->
+                    <!-- Logo File Selector with Inline Image Preview -->
                     <div class="mb-3">
                         <label for="logo" class="form-label form-label-custom mb-2">Company Logo</label>
                         
@@ -77,7 +77,7 @@
                                class="form-control form-control-file-custom @error('logo') is-invalid @enderror">
                     </div>
 
-                    <!-- Bottom Navigation Form Action Anchors (Left aligned) -->
+                    <!-- Update Company and Cancel Buttons -->
                     <div class="d-flex justify-content-center align-items-center gap-2 pt-2">
                         <button type="submit" class="btn btn-purple px-4 py-2 fw-bold">
                             Update Company
@@ -87,7 +87,6 @@
                         </a>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>

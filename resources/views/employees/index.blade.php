@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container">
-    <!-- Top Action Row -->
+    <!-- Title and Add Employee Button -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h2 fw-bold m-0" style="color: var(--text-main);">List of Employees</h1>
         <a href="{{ route('employees.create') }}" class="btn btn-purple px-4 fw-bold">
@@ -18,7 +18,7 @@
         </div>
     @endif
 
-    <!-- Data Table Container -->
+    <!-- List of Employees Table -->
     <div class="table-responsive">
         <table class="table table-dark-custom align-middle shadow-sm">
             <thead>
@@ -59,16 +59,16 @@
                         @endif
                     </td>
                     
-                    <!-- Email and Contact Coordinates -->
+                    <!-- Email and Contact Phone Number -->
                     <td>{{ $employee->email ?? '-' }}</td>
                     <td>{{ $employee->phone ?? '-' }}</td>
                     
-                    <!-- Clean Core Administrative Actions -->
+                    <!-- Actions Links (View, Edit, Delete) -->
                     <td class="text-center">
                         <div class="d-flex justify-content-center align-items-center gap-3">
                             <a href="{{ route('employees.show', $employee->id) }}" class="action-link text-info">View</a>
                             <a href="{{ route('employees.edit', $employee->id) }}" class="action-link text-warning">Edit</a>
-                            
+                            <!-- Delete Method for Delete Link with Warning Box for Confirmation -->
                             <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Delete this employee?');">
                                 @csrf 
                                 @method('DELETE')
@@ -82,7 +82,7 @@
         </table>
     </div>
 
-    <!-- Themed Pagination Row -->
+    <!-- Pagination Row Handled by Vendor/Pagination Bootstrap Files -->
     <div class="d-flex justify-content-center mt-4">
         {{ $employees->links() }}
     </div>
