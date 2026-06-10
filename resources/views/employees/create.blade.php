@@ -17,7 +17,7 @@
                 <!-- Error Alert Block -->
                 @if ($errors->any())
                     <div class="alert dark-error-alert p-4 mb-4 shadow-sm" role="alert">
-                        <div class="fw-bold mb-1">Please correct the errors below:</div>
+                        <div class="fw-bold fs-5 mb-1">Please Correct The Errors Below:</div>
                         <ul class="mb-0 ps-3">
                         <!-- Loops through all Form Errors -->
                             @foreach ($errors->all() as $error)
@@ -41,7 +41,7 @@
                                    class="form-control @error('first_name') is-invalid @enderror"
                                    placeholder="John">
                             @error('first_name') 
-                                <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                                <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                             @enderror
                         </div>
                         <!-- Last Name -->
@@ -52,7 +52,7 @@
                                    class="form-control @error('last_name') is-invalid @enderror"
                                    placeholder="Doe">
                             @error('last_name') 
-                                <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                                <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                             @enderror
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                             @endforeach
                         </select>
                         @error('company_id') 
-                            <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                         @enderror
                     </div>
 
@@ -82,7 +82,7 @@
                                class="form-control @error('email') is-invalid @enderror"
                                placeholder="johndoe@company.com">
                         @error('email') 
-                            <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                         @enderror
                     </div>
 
@@ -94,7 +94,7 @@
                                class="form-control @error('phone') is-invalid @enderror"
                                placeholder="+1 (555) 000-0000">
                         @error('phone') 
-                            <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                         @enderror
                     </div>
 

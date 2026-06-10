@@ -16,6 +16,8 @@ php artisan db:seed --class=DatabaseSeeder
 
 php artisan db:seed --class=CompanySeeder 
 
+php artisan storage:link
+
 In order for the above command to work you need to make sure the images are in the directory storage/app/public/logos
 
 then in order to run the tool in your browser you will need two terminals open and type the following command in the first terminal

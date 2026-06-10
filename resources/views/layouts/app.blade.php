@@ -628,7 +628,7 @@ input:-webkit-autofill:focus {
 
 .invalid-feedback-custom {
     color: #fb7185 !important;
-    font-size: 0.8rem;
+    font-size: 1rem !important;
     font-weight: 500;
 }
 

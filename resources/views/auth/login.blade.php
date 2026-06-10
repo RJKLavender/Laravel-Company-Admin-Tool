@@ -23,9 +23,6 @@
 
                             <div class="">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                @enderror
                             </div>
                         </div>
 
@@ -34,9 +31,9 @@
                             <label for="password" class="col-md-12 form-label">{{ __('Password') }}</label>
                             <!-- Password Field is Encrypted on Display -->
                             <div class="">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                <input id="password" type="password" class="form-control mb-1 @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                @error('email')
+                                    <span class="invalid-feedback-custom" role="alert"><strong class="px-2">{{ $message }}</strong></span>
                                 @enderror
                             </div>
                         </div>

@@ -15,7 +15,7 @@
                 <!-- Error Alert Block -->
                 @if ($errors->any())
                     <div class="alert dark-error-alert p-4 mb-4 shadow-sm" role="alert">
-                        <div class="fw-bold mb-1">Please correct the errors below:</div>
+                        <div class="fw-bold fs-5 mb-1">Please Correct The Errors Below:</div>
                         <ul class="mb-0 ps-3">
                             <!-- Loops through all Form Errors -->
                             @foreach ($errors->all() as $error)
@@ -36,7 +36,7 @@
                                class="form-control @error('name') is-invalid @enderror"
                                placeholder="Acme Corporation">
                         @error('name') 
-                            <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                         @enderror
                     </div>
 
@@ -47,7 +47,7 @@
                                class="form-control @error('email') is-invalid @enderror"
                                placeholder="corporate@acme.com">
                         @error('email') 
-                            <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                         @enderror
                     </div>
 
@@ -58,7 +58,7 @@
                                placeholder="https://acme.com"
                                class="form-control @error('website') is-invalid @enderror">
                         @error('website') 
-                            <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                         @enderror
                     </div>
 
@@ -67,9 +67,9 @@
                         <label for="logo" class="form-label form-label-custom">Company Logo</label>
                         <input type="file" name="logo" id="logo" 
                                class="form-control form-control-file-custom @error('logo') is-invalid @enderror">
-                        <div class="form-text text-white-50 opacity-70 small mt-1.5">Minimum dimensions: 100x100 pixels.</div>
+                        <div class="form-text text-white-50 opacity-70 small mt-1">Minimum dimensions: 100x100 pixels.</div>
                         @error('logo') 
-                            <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                         @enderror
                     </div>
 

@@ -50,7 +50,7 @@ class UpdateEmployeeRequest extends FormRequest
             'company_id.exists' => 'The selected company is invalid.',
             'email.email' => 'Please enter a valid email address.',
             'email.unique' => 'This email address is already assigned to another employee.',
-            'phone.phone' => 'Please Enter a Valid Phone Number'
+            'phone.phone' => 'Please enter a valid phone number.'
         ];
     }
 }

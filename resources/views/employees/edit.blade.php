@@ -19,7 +19,7 @@
                 <!-- Error Alert Block (works the same as create view) -->
                 @if ($errors->any())
                     <div class="alert dark-error-alert p-4 mb-4 shadow-sm" role="alert">
-                        <div class="fw-bold mb-1">Please correct the errors below:</div>
+                        <div class="fw-bold fs-5 mb-1">Please Correct The Errors Below:</div>
                         <ul class="mb-0 ps-3">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -42,7 +42,7 @@
                                    value="{{ old('first_name', $employee->first_name) }}" 
                                    class="form-control @error('first_name') is-invalid @enderror">
                             @error('first_name') 
-                                <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                                <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                             @enderror
                         </div>
                         <!-- Last Name -->
@@ -52,7 +52,7 @@
                                    value="{{ old('last_name', $employee->last_name) }}" 
                                    class="form-control @error('last_name') is-invalid @enderror">
                             @error('last_name') 
-                                <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                                <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                             @enderror
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                     <!-- Company Selection Dropdown -->
                     <div class="mb-3">
                         <label for="company_id" class="form-label form-label-custom">Company</label>
-                        <select name="company_id" id="company_id" class="form-select form-select-dark @error('company_id') is-invalid @enderror">
+                        <select name="company_id" id="company_id" class="form-select mb-1.5 form-select-dark @error('company_id') is-invalid @enderror">
                             <option value="">Select a Company</option>
                             @foreach($companies as $company)
                                 <option value="{{ $company->id }}" {{ old('company_id', $employee->company_id) == $company->id ? 'selected' : '' }}>
@@ -69,7 +69,7 @@
                             @endforeach
                         </select>
                         @error('company_id') 
-                            <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                         @enderror
                     </div>
 
@@ -80,7 +80,7 @@
                                value="{{ old('email', $employee->email) }}" 
                                class="form-control @error('email') is-invalid @enderror">
                         @error('email') 
-                            <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                         @enderror
                     </div>
 
@@ -91,7 +91,7 @@
                                value="{{ old('phone', $employee->phone) }}" 
                                class="form-control @error('phone') is-invalid @enderror">
                         @error('phone') 
-                            <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                         @enderror
                     </div>
 

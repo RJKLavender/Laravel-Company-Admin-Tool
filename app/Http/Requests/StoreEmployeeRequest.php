@@ -42,7 +42,7 @@ class StoreEmployeeRequest extends FormRequest
             'last_name.max' => 'Last Name cannot exceed 255 characters.',
             'email.email' => 'Please enter a valid email address.',
             'email.unique' => 'This email address is already assigned to another employee.',
-            'phone.phone' => 'Please Enter a Valid Phone Number'
+            'phone.phone' => 'Please enter a valid phone number.'
         ];
     }
 }

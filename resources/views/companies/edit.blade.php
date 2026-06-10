@@ -18,7 +18,7 @@
                 <!-- Error Alert Block (works the same as the create view) -->
                 @if ($errors->any())
                     <div class="alert dark-error-alert p-4 mb-4 shadow-sm" role="alert">
-                        <div class="fw-bold mb-1">Please correct the errors below:</div>
+                        <div class="fw-bold fs-5 mb-1">Please Correct The Errors Below:</div>
                         <ul class="mb-0 ps-3">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -38,7 +38,7 @@
                         <input type="text" name="name" id="name" value="{{ old('name', $company->name) }}" 
                                class="form-control @error('name') is-invalid @enderror">
                         @error('name') 
-                            <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                         @enderror
                     </div>
 
@@ -48,7 +48,7 @@
                         <input type="email" name="email" id="email" value="{{ old('email', $company->email) }}" 
                                class="form-control @error('email') is-invalid @enderror">
                         @error('email') 
-                            <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                         @enderror
                     </div>
 
@@ -58,7 +58,7 @@
                         <input type="url" name="website" id="website" value="{{ old('website', $company->website) }}" 
                                class="form-control @error('website') is-invalid @enderror">
                         @error('website') 
-                            <div class="invalid-feedback-custom mt-1"><strong>{{ $message }}</strong></div> 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
                         @enderror
                     </div>
 
@@ -75,6 +75,9 @@
 
                         <input type="file" name="logo" id="logo" 
                                class="form-control form-control-file-custom @error('logo') is-invalid @enderror">
+                         @error('logo') 
+                            <div class="invalid-feedback-custom mt-1"><strong class="px-2">{{ $message }}</strong></div> 
+                        @enderror
                     </div>
 
                     <!-- Update Company and Cancel Buttons -->
