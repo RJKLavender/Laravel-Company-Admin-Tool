@@ -632,6 +632,36 @@ input:-webkit-autofill:focus {
     font-weight: 500;
 }
 
+/* Sortable Colums Styling */
+.sort-triangle {
+    display: inline-block;
+    margin-left: 8px;
+    width: 0;
+    height: 0;
+    vertical-align: middle;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    transition: border-color 0.15s ease-in-out;
+}
+
+/* Default state: Unsorted column displays a faint upward-pointing arrow */
+.sort-triangle.default {
+    border-bottom: 8px solid rgba(255, 255, 255, 0.25);
+    border-top: none;
+}
+
+/* Active Ascending State: Upwards Pointing Arrow */
+.sort-triangle.asc {
+    border-bottom: 8px solid var(--text-main);
+    border-top: none;
+}
+
+/* Active Descending State: Downwards Pointing Arrow */
+.sort-triangle.desc {
+    border-top: 8px solid var(--text-main);
+    border-bottom: none;
+}
+
 </style>
 </head>
 <body class="d-flex flex-column min-vh-100">

@@ -23,12 +23,47 @@
         <table class="table table-dark-custom align-middle shadow-sm">
             <thead>
                 <tr>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Company</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col" class="text-center">Actions</th>
+                    <!-- Sortable First Name Column -->
+                    <th scope="col">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'first_name', 'direction' => ($sort === 'first_name' && $direction === 'asc') ? 'desc' : 'asc']) }}" class="text-decoration-none fw-bold d-inline-flex align-items-center" style="color: var(--text-main);">
+                            First Name 
+                            <span class="sort-triangle {{ $sort === 'first_name' ? $direction : 'default' }}"></span>
+                        </a>
+                    </th>
+                    
+                    <!-- Sortable Last Name Column -->
+                    <th scope="col">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'last_name', 'direction' => ($sort === 'last_name' && $direction === 'asc') ? 'desc' : 'asc']) }}" class="text-decoration-none fw-bold d-inline-flex align-items-center" style="color: var(--text-main);">
+                            Last Name 
+                            <span class="sort-triangle {{ $sort === 'last_name' ? $direction : 'default' }}"></span>
+                        </a>
+                    </th>
+                    
+                    <!-- Sortable Company Column -->
+                    <th scope="col">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'company_name', 'direction' => ($sort === 'company_name' && $direction === 'asc') ? 'desc' : 'asc']) }}" class="text-decoration-none fw-bold d-inline-flex align-items-center" style="color: var(--text-main);">
+                            Company 
+                            <span class="sort-triangle {{ $sort === 'company_name' ? $direction : 'default' }}"></span>
+                        </a>
+                    </th>
+                    
+                    <!-- Sortable Email Column -->
+                    <th scope="col">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'email', 'direction' => ($sort === 'email' && $direction === 'asc') ? 'desc' : 'asc']) }}" class="text-decoration-none fw-bold d-inline-flex align-items-center" style="color: var(--text-main);">
+                            Email 
+                            <span class="sort-triangle {{ $sort === 'email' ? $direction : 'default' }}"></span>
+                        </a>
+                    </th>
+                    
+                    <!-- Sortable Phone Column -->
+                    <th scope="col">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'phone', 'direction' => ($sort === 'phone' && $direction === 'asc') ? 'desc' : 'asc']) }}" class="text-decoration-none fw-bold d-inline-flex align-items-center" style="color: var(--text-main);">
+                            Phone 
+                            <span class="sort-triangle {{ $sort === 'phone' ? $direction : 'default' }}"></span>
+                        </a>
+                    </th>
+                    
+                    <th scope="col" class="text-center" style="color: var(--text-main);">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -68,7 +103,6 @@
                         <div class="d-flex justify-content-center align-items-center gap-3">
                             <a href="{{ route('employees.show', $employee->id) }}" class="action-link text-info">View</a>
                             <a href="{{ route('employees.edit', $employee->id) }}" class="action-link text-warning">Edit</a>
-                            <!-- Delete Method for Delete Link with Warning Box for Confirmation -->
                             <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Delete this employee?');">
                                 @csrf 
                                 @method('DELETE')
@@ -84,7 +118,7 @@
 
     <!-- Pagination Row Handled by Vendor/Pagination Bootstrap Files -->
     <div class="d-flex justify-content-center mt-4">
-        {{ $employees->links() }}
+        {{ $employees->appends(request()->query())->links() }}
     </div>
 </div>
 @endsection

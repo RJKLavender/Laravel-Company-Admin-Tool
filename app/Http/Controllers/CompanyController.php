@@ -15,11 +15,17 @@ class CompanyController extends Controller
     /**
      * Display a view containing a list of companies with 10 per page
      */
-    public function index()
+    public function index(Request $request)
     {
-        $companies = Company::withCount('employees')->paginate(10);
+        //sortable options for company view
+        $sortableColumsCoampny = ['name','email','website','employees_count'];
+        
+        $sort = in_array($request->get('sort'), $sortableColumsCoampny) ? $request->get('sort') : 'name';
+        $direction = $request->get('direction') === 'desc' ? 'desc' : 'asc' ;
+        
+        $companies = Company::withCount('employees')->orderBy($sort, $direction)->paginate(10);
 
-        return view('companies.index', compact('companies'));   
+        return view('companies.index', compact('companies', 'sort', 'direction'));   
     }
 
     /**
@@ -78,7 +84,7 @@ class CompanyController extends Controller
     }
 
     $company->update($validatedData);
-// returns the view with success message
+    // returns the view with success message
     return redirect()->route('companies.index')->with('success', 'Company updated successfully.');
     }
 

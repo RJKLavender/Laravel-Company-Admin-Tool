@@ -14,10 +14,31 @@ class EmployeeController extends Controller
     /**
      * Displays a list of employees with 10 per page
      */
-    public function index()
+    public function index(Request $request)
     {
-         $employees = Employee::with('company')->paginate(10);
-        return view('employees.index', compact('employees'));
+    //sorting options for employee view
+    $sortableColumnsEmployee = ['first_name', 'last_name', 'company_name', 'email', 'phone'];
+
+    $sort = in_array($request->get('sort'), $sortableColumnsEmployee) ? $request->get('sort') : 'first_name';
+    $direction = $request->get('direction') === 'desc' ? 'desc' : 'asc';
+
+    $query = Employee::with('company');
+
+    // checks if sortable company
+    if ($sort === 'company_name') {
+        $query->orderBy(
+            Company::select('name')
+                ->whereColumn('companies.id', 'employees.company_id')
+                ->take(1),
+            $direction
+        );
+    } else {
+        $query->orderBy($sort, $direction);
+    }
+
+    $employees = $query->paginate(10);
+
+    return view('employees.index', compact('employees', 'sort', 'direction'));
     }
 
     /**
@@ -55,7 +76,7 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        $companies = Company::orderBy('name')->get();
+        $companies = Company::orderBy('name')->get(); //gets company list for dropdown box
         return view('employees.edit', compact('employee', 'companies'));
     }
 
