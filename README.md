@@ -73,3 +73,5 @@ Once all the above is edited and updated save the file and re run your php artis
 And then you can test the projec from here.
 
 Hope you like the Admin tool I have created.
+
+Note: Default Email and Password to login for testing are in the Database Seeder File, you can put your own into the user table as well.
