@@ -18,6 +18,62 @@
         </div>
     @endif
 
+    <!-- Search and Filter Panel Area -->
+    <div class="row mb-3">
+    <div class="card border-0 col-md-7 col-lg-6 shadow-sm" style="background-color: var(--bg-dark-grey, #1e1e1e); border-radius: 10px;">
+        <form id="searchForm" action="{{ url()->current() }}" method="GET">
+            <!-- Retain current sort and order preferences natively -->
+            @if(request('sort'))
+                <input type="hidden" name="sort" value="{{ request('sort') }}">
+            @endif
+            @if(request('direction'))
+                <input type="hidden" name="direction" value="{{ request('direction') }}">
+            @endif  
+                <div class="row g-3 align-items-center">
+                    <div class="col">
+                    <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                        <span class="input-group-text border-0 text-muted" style="background-color: #2a2a2a; color: var(--text-main) !important;">
+                            <svg xmlns="http://w3.org" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </span>
+                        <input 
+                            type="text" 
+                            name="search" 
+                            id="searchInput"
+                            value="{{ request('search') }}" 
+                            class="form-control border-0 text-white py-2" 
+                            style="background-color: #2a2a2a; color-scheme: dark;"
+                            placeholder="Type a company name..."
+                            aria-label="Search by company name"
+                            autocomplete="off"
+                        >
+            
+                        
+                    </div>
+                </div>
+
+                <!-- Search Button -->
+                <div class="col-auto d-flex gap-3">
+                    <button class="btn btn-purple fw-bold px-4" type="submit">
+                        Search
+                    </button>
+
+                     @if(request('search'))
+                        <a href="{{ url()->current() . (request('sort') ? '?sort='.request('sort').'&direction='.request('direction') : '') }}" 
+                           class="btn fw-bold px-4 py-2 custom-clear-btn" 
+                           style="border-radius: 8px; color: var(--text-main, #ffffff); border: 2px solid rgba(255, 255, 255, 0.4); background: transparent;"
+                           title="Reset Table">
+                            Clear
+                        </a>
+                    @endif
+
+                </div>
+            </div>    
+        </form>
+    </div>
+    </div>
+
     <!-- List of Companies Table -->
     <div class="table-responsive">
     <table class="table table-dark-custom align-middle shadow-sm">
@@ -104,15 +160,118 @@
                 
                 <!-- Actions Links (View, Edit & Delete) -->
                 <td class="text-center">
+                    <div class="d-flex justify-content-center align-items-center gap-3 px-2">                       
+            
                     <div class="d-flex justify-content-center align-items-center gap-3 px-2">
-                        <a href="{{ route('companies.show', $company->id) }}" class="action-link text-info">View</a>
-                        <a href="{{ route('companies.edit', $company->id) }}" class="action-link text-warning">Edit</a>
-                        <form action="{{ route('companies.destroy', $company->id) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Delete this company? All employees will be unassigned.');">
+                        <a href="{{ route('companies.show', $company->id) }}" class="btn btn-info px-3 py-2 fw-bold">View</a>
+                        <a href="{{ route('companies.edit', $company->id) }}" class="btn btn-edit px-3 py-2 fw-bold">Edit</a>
+    
+                        <!-- Trigger button linked to the modal below -->
+                        <button type="button" 
+                                class="btn-delete btn px-3 py-2 border-0 align-baseline fw-bold"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#deleteModal-{{ $company->id }}">
+                            Remove
+                        </button>
+                    </div>
+
+<!-- Dynamic Confirmation Modal -->
+<div class="modal fade text-start" id="deleteModal-{{ $company->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $company->id }}" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-light border-secondary">
+      
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title" id="deleteModalLabel-{{ $company->id }}">Confirm Company Deletion</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <form id="deleteForm-{{ $company->id }}" action="{{ route('companies.destroy', $company->id) }}" method="POST" class="m-0">
+          @csrf 
+          @method('DELETE')
+
+          <div class="modal-body text-wrap opacity-90">
+            <p>Are you sure you want to permanently remove <strong>{{ $company->name }}</strong>?</p>
+
+            <!-- CONDITION A: Company HAS employees -> Force Reassignment -->
+            @if(($company->employees_count ?? $company->employees->count()) > 0)
+                <div class="alert alert-warning bg-transparent border-warning text-warning small mb-3">
+                    <i class="bi bi-exclamation-triangle"></i> 
+                    <strong>Action Required:</strong> This company has <strong>{{ $company->employees_count ?? $company->employees->count() }} staff employees </strong>. You must reassign them to another company before deleting this company.
+                </div>
+
+                <div class="mb-2">
+                    <label for="reassign-{{ $company->id }}" class="form-label small fw-bold text-light opacity-75">Transfer Employees To:</label>
+                    <select name="reassign_company_id" id="reassign-{{ $company->id }}" class="form-select bg-dark text-light border-secondary shadow-none" required>
+                        <option value="" disabled selected>-- Choose target company --</option>
+                        @foreach($allCompanies as $targetCompany)
+                            {{-- Hide the current company from its own transfer list --}}
+                            @if($targetCompany->id !== $company->id)
+                                <option value="{{ $targetCompany->id }}">{{ $targetCompany->name }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
+
+            <!-- CONDITION B: Company has NO employees -> Safe to delete directly -->
+            @else
+                <div class="alert fw-bold alert-success bg-transparent border-success text-success small mb-0">
+                    <i class="bi bi-check-circle"></i> This company currently has 0 staff employees and can be safely deleted.
+                </div>
+            @endif
+          </div>
+          
+          <div class="modal-footer border-secondary">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            
+            <!-- Button updates dynamically depending on the employee count state -->
+            <button type="submit" class="btn {{ ($company->employees_count ?? $company->employees->count()) > 0 ? 'btn-warning text-dark' : 'btn-danger' }} fw-bold">
+                {{ ($company->employees_count ?? $company->employees->count()) > 0 ? 'Reassign & Remove' : 'Remove Company' }}
+            </button>
+          </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+                        <!-- 
+                        <form id="deleteForm-{{ $company->id }}" action="{{ route('companies.destroy', $company->id) }}" method="POST" class="d-inline m-0">
                             @csrf 
                             @method('DELETE')
-                            <button type="submit" class="btn btn-link p-0 action-link text-danger border-0 align-baseline">Remove</button>
+                            <!-- Trigger button linked to modal below 
+                            <button type="button" 
+                                    class="btn-delete btn px-3 py-2 border-0 align-baseline fw-bold"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#deleteModal-{{ $company->id }}">
+                                Remove
+                            </button>
                         </form>
                     </div>
+
+                    <!-- Confirmation Modal -->
+                     <!--
+                    <div class="modal fade text-start" id="deleteModal-{{ $company->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $company->id }}" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content bg-dark text-light border-secondary">
+                          
+                          <div class="modal-header border-secondary">
+                            <h5 class="modal-title" id="deleteModalLabel-{{ $company->id }}">Confirm Deletion</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          
+                          <div class="modal-body text-wrap opacity-90">
+                            Are you sure you want to permanently remove <strong>{{ $company->name }}</strong>? <br>
+                            <span class="text-warning small"><i class="bi bi-exclamation-triangle"></i> All employees linked to this firm will be unassigned.</span>
+                          </div>
+                          
+                          <div class="modal-footer border-secondary">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" form="deleteForm-{{ $company->id }}" class="btn btn-danger fw-bold">Remove Company</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div> -->
+
                 </td>
             </tr>
             @endforeach

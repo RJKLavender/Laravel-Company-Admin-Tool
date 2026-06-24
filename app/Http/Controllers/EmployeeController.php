@@ -19,10 +19,27 @@ class EmployeeController extends Controller
     //sorting options for employee view
     $sortableColumnsEmployee = ['first_name', 'last_name', 'company_name', 'email', 'phone'];
 
-    $sort = in_array($request->get('sort'), $sortableColumnsEmployee) ? $request->get('sort') : 'first_name';
+    $sort = in_array($request->get('sort'), $sortableColumnsEmployee) ? $request->get('sort') : 'last_name';
     $direction = $request->get('direction') === 'desc' ? 'desc' : 'asc';
 
     $query = Employee::with('company');
+
+    //search by either first or last name 
+    if ($request->filled('search')) {
+        // Clean up extra spaces and split the input string by spaces
+        $words = explode(' ', preg_replace('/\s+/', ' ', trim($request->search)));
+
+        $query->where(function ($subQuery) use ($words) {
+            if (count($words) === 1) {
+                // Scenario A: Only one word typed -> strictly search last name
+                $subQuery->where('last_name', 'like', $words[0] . '%');
+            } else {
+                // Scenario B: Multiple words typed -> word 1 is First Name, word 2 is Last Name
+                $subQuery->where('first_name', 'like', $words[0] . '%')
+                         ->where('last_name', 'like', $words[1] . '%');
+            }
+        });
+    }
 
     // checks if sortable company
     if ($sort === 'company_name') {
@@ -36,7 +53,7 @@ class EmployeeController extends Controller
         $query->orderBy($sort, $direction);
     }
 
-    $employees = $query->paginate(10);
+    $employees = $query->paginate(10)->withQueryString();
 
     return view('employees.index', compact('employees', 'sort', 'direction'));
     }
@@ -58,7 +75,7 @@ class EmployeeController extends Controller
      
     Employee::create($request->validated());
 
-    return redirect()->route('employees.index')->with('success', 'Employee added successfully.');
+    return redirect()->route('employees.index')->with('success', 'Employee has been successfully created.');
     }
 
     /**
@@ -88,7 +105,7 @@ class EmployeeController extends Controller
        
     $employee->update($request->validated());
 
-    return redirect()->route('employees.index')->with('success', 'Employee data updated successfully.');
+    return redirect()->route('employees.index')->with('success', 'Employee has been successfully updated.');
     }
 
     /*
@@ -97,7 +114,7 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         $employee->delete();
-        return redirect()->route('employees.index')->with('success', 'Employee deleted.');
+        return redirect()->route('employees.index')->with('success', 'Employee has been successfully deleted.');
     }
 
 }

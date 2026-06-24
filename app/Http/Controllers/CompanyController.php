@@ -17,15 +17,25 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        //sortable options for company view
-        $sortableColumsCoampny = ['name','email','website','employees_count'];
-        
-        $sort = in_array($request->get('sort'), $sortableColumsCoampny) ? $request->get('sort') : 'name';
-        $direction = $request->get('direction') === 'desc' ? 'desc' : 'asc' ;
-        
-        $companies = Company::withCount('employees')->orderBy($sort, $direction)->paginate(10);
 
-        return view('companies.index', compact('companies', 'sort', 'direction'));   
+        //sortable options for company view
+        $sortableColumsCoampany = ['name','email','website','employees_count'];
+        
+        $sort = in_array($request->get('sort'), $sortableColumsCoampany) ? $request->get('sort') : 'name';
+        $direction = $request->get('direction') === 'desc' ? 'desc' : 'asc';
+
+        //Search function Code
+        $query = Company::withCount('employees');
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', $request->search . '%');
+        }
+
+        $companies = $query->orderBy($sort, $direction)->paginate(10)->withQueryString();
+
+        $allCompanies = Company::select('id', 'name')->orderBy('name', 'asc')->get();
+
+        return view('companies.index', compact('companies', 'sort', 'direction', 'allCompanies'));   
     }
 
     /**
@@ -50,7 +60,7 @@ class CompanyController extends Controller
     
     Company::create($validatedData);
     // returns the view with success message
-    return redirect()->route('companies.index')->with('success', 'Company created successfully.');
+    return redirect()->route('companies.index')->with('success', 'Company has been successfully created.');
     }
 
     /**
@@ -85,14 +95,40 @@ class CompanyController extends Controller
 
     $company->update($validatedData);
     // returns the view with success message
-    return redirect()->route('companies.index')->with('success', 'Company updated successfully.');
+    return redirect()->route('companies.index')->with('success', 'Company has been successfully updated.');
     }
 
     /**
      * Deletes the company from the database
      */
-    public function destroy(Company $company)
+    public function destroy(Request $request, Company $company)
     {
+        $employeeCount = $company->employees()->count();
+
+        if ($request->input('source') === 'profile') {
+        if ($employeeCount > 0) {
+            return redirect()->route('companies.show', $company->id)
+                ->withErrors(['delete_error' => 'Cannot delete a company with active employees via its profile page.']);
+        }
+        
+        // Safe to delete if count is zero
+        $company->delete();
+        return redirect()->route('companies.index')
+            ->with('success', 'Company removed successfully.');
+        }
+
+        if ($employeeCount > 0) {
+        // Enforce dropdown selection validation if employees exist
+        $request->validate([
+            'reassign_company_id' => 'required|exists:companies,id|not_in:' . $company->id
+        ]);
+
+        // Bulk reassign all employees to the selected target company ID
+        $company->employees()->update([
+            'company_id' => $request->reassign_company_id
+        ]);
+        }
+
         //deletes the logo from storage
         if ($company->logo) {
             Storage::disk('public')->delete($company->logo);
@@ -100,6 +136,6 @@ class CompanyController extends Controller
         
         //deletes the company from the database and supplys success message.
         $company->delete();
-        return redirect()->route('companies.index')->with('success', 'Company successfuly deleted.');
+        return redirect()->route('companies.index')->with('success', 'Company has been successfully deleted and employees reassigned.');
     }
 }

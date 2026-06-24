@@ -18,10 +18,67 @@
         </div>
     @endif
 
+    <div class="row mb-3">
+        <div class="col-md-8 col-lg-7"> 
+            <form action="{{ url()->current() }}" method="GET">
+                <!-- Retain current sort and order preferences natively -->
+                @if(request('sort'))
+                    <input type="hidden" name="sort" value="{{ request('sort') }}">
+                @endif
+                @if(request('direction'))
+                    <input type="hidden" name="direction" value="{{ request('direction') }}">
+                @endif
+
+                <!--Search Form-->
+                <div class="row g-3 align-items-center">
+                    <!-- Search Field Container -->
+                    <div class="col">
+                        <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                            <!-- Search Icon Wrapper -->
+                            <span class="input-group-text border-0 text-muted" style="background-color: #2a2a2a; color: var(--text-main) !important;">
+                                <svg xmlns="http://w3.org" width="14" height="14" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                </svg>
+                            </span>
+                            
+                            <!-- Text Input -->
+                            <input 
+                                type="text" 
+                                name="search" 
+                                value="{{ request('search') }}" 
+                                class="form-control border-0 text-white py-2" 
+                                style="background-color: var(--bg-dark-grey, #1e1e1e); color-scheme: dark; font-size: 0.95rem;"
+                                placeholder="Search by last name, or full name (e.g. 'Smith' or 'John Smith')..."
+                                aria-label="Search by employee name"
+                                autocomplete="off"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons Container (Search & Clear) -->
+                    <div class="col-auto d-flex align-items-center" style="gap: 12px;">
+                        <button class="btn btn-purple fw-bold px-4 py-2" type="submit" style="border-radius: 8px;">
+                            Search
+                        </button>
+
+                        @if(request('search'))
+                            <a href="{{ url()->current() . (request('sort') ? '?sort='.request('sort').'&direction='.request('direction') : '') }}" 
+                               class="btn fw-bold px-4 py-2 custom-clear-btn" 
+                               style="border-radius: 8px; color: var(--text-main, #ffffff); border: 2px solid rgba(255, 255, 255, 0.4); background: transparent;"
+                               title="Reset Table">
+                                Clear
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- List of Employees Table -->
     <div class="table-responsive">
         <table class="table table-dark-custom align-middle shadow-sm">
-            <thead>
+            <thead style="vertical-align: middle !important;">
                 <tr>
                     <!-- Sortable First Name Column -->
                     <th scope="col">
@@ -90,7 +147,7 @@
                                 {{ $employee->company->name }}
                             </a>
                         @else
-                            <span class="text-muted opacity-50 italic small">None</span>
+                            <span class="text-white-50 italic small" style="font-size:1rem; ">No Company Employer</span>
                         @endif
                     </td>
                     
@@ -100,15 +157,45 @@
                     
                     <!-- Actions Links (View, Edit, Delete) -->
                     <td class="text-center">
-                        <div class="d-flex justify-content-center align-items-center gap-3">
-                            <a href="{{ route('employees.show', $employee->id) }}" class="action-link text-info">View</a>
-                            <a href="{{ route('employees.edit', $employee->id) }}" class="action-link text-warning">Edit</a>
-                            <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Delete this employee?');">
+                        <div class="d-flex justify-content-center align-items-center gap-4">
+                            <a href="{{ route('employees.show', $employee->id) }}" class="btn btn-info px-3 py-2 fw-bold">View</a>
+                            <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-edit px-3 py-2 fw-bold">Edit</a>
+                            
+                            <form id="deleteForm-{{ $employee->id }}" action="{{ route('employees.destroy', $employee->id) }}" method="POST" class="d-inline m-0">
                                 @csrf 
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-link p-0 action-link text-danger border-0 align-baseline">Delete</button>
+
+                                <!-- The Trigger Button -->
+                                <button type="button" class="btn btn-delete px-3 py-2 fw-bold border-0 align-baseline" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $employee->id }}">
+                                    Delete
+                                </button>
                             </form>
                         </div>
+
+                        <!-- Bootstrap Delete Confirmation Modal -->
+                        <div class="modal fade text-start" id="deleteModal-{{ $employee->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $employee->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                        
+                            <div class="modal-content bg-dark text-light border-secondary">
+      
+                            <div class="modal-header border-secondary">
+                                <h5 class="modal-title" id="deleteModalLabel-{{ $employee->id }}">Confirm Employee Deletion</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+      
+                            <div class="modal-body text-wrap opacity-90 text-center">
+                                Are you sure you want to permanently delete <strong>{{ $employee->first_name }} {{ $employee->last_name }}</strong>? This action cannot be undone.
+                            </div>
+      
+                            <div class="modal-footer border-secondary">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" form="deleteForm-{{ $employee->id }}" class="btn btn-danger fw-bold">Delete Employee</button>
+                            </div>
+
+                            </div>
+                        </div>
+                        </div>
+
                     </td>
                 </tr>
                 @endforeach

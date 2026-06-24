@@ -16,6 +16,10 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
+    <link rel="icon" type="image/png" href="{{ asset('favicon-32x32.png') }}">
+
+    <link rel="manifest" href="/site.webmanifest">
+
 <style>
 
 /* Custom Theme Styling over the top of Bootstrap */
@@ -414,8 +418,8 @@ input:-webkit-autofill:focus {
 
 /* Logo diemensions for table */
 .company-logo-frame {
-    width:150px;
-    height:150px;
+    width:60px;
+    height:60px;
     border-radius:10px;
 }
 
@@ -662,13 +666,67 @@ input:-webkit-autofill:focus {
     border-bottom: none;
 }
 
+/* Action Buttons */
+.btn-info {
+    background-color: rgb(25, 165, 13) !important;
+    color: white !important;
+    border: none;
+    transition: background-color 0.15s ease-in-out;
+    font-size: 1.05rem;
+    --bs-text-opacity: 1;
+    text-decoration: none !important;
+}
+
+.btn-info:hover {
+    background-color: rgba(13, 240, 58, 0.46) !important;
+    color: white !important;
+}
+
+.btn-edit {
+    background-color: rgb(12, 131, 179) !important;
+    color: white !important;
+    border: none;
+    transition: background-color 0.15s ease-in-out;
+    font-size: 1.05rem;
+    --bs-text-opacity: 1;
+    text-decoration: none !important;
+
+}
+
+.btn-delete {
+    background-color:rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+    color: white !important;
+    border: none;
+    transition: background-color 0.15s ease-in-out;
+    font-size: 1.05rem;
+    --bs-text-opacity: 1;
+    text-decoration: none !important;
+}
+
+.btn-edit:hover {
+    background-color: rgba(12, 85, 179, 0.95) !important;
+    color: white !important;
+
+}
+
+.btn-delete:hover {
+    background-color: rgba(217, 24, 43, 0.86) !important;
+    color: white !important;
+}
+
+.custom-clear-btn:hover {
+        color: #ffffff !important;
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
 </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <div id="app" class="flex-grow-1">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: var(--bg-card-grey);">
-    <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: var(--bg-card-grey);">
+        <div class="container">
         <a class="navbar-brand fw-bold me-4" href="{{ url('/') }}">
             <span style="color: var(--purple-primary);">★</span> {{ config('app.name', 'AdminTool') }}
         </a>
@@ -711,11 +769,11 @@ input:-webkit-autofill:focus {
                 @endguest
             </ul>
         </div>
-    </div>
-</nav>
+        </div>
+    </nav>
 
         <!-- Main Content Area -->
-        <main class="py-4 px-2 px-sm-0">
+        <main class="py-5 px-2 px-sm-0">
             @yield('content')
         </main>
     </div>

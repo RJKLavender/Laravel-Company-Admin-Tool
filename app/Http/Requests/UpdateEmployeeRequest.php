@@ -29,13 +29,13 @@ class UpdateEmployeeRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'company_id' => 'required|exists:companies,id',
+            'company_id' => 'nullable|exists:companies,id', 
             'email' => [
                 'nullable',
                 'email',
                 Rule::unique('employees', 'email')->ignore($employeeId),
             ],
-            'phone' => 'nullable|string|max:20|phone:GB,AUTO',
+            'phone' => 'nullable|string|max:20',
         ];
     }
         // Error messages for the above rules failing validation
@@ -46,11 +46,8 @@ class UpdateEmployeeRequest extends FormRequest
             'last_name.required' => 'Last Name is required.',
             'first_name.max' => 'First Name cannot exceed 255 characters.',
             'last_name.max' => 'Last Name cannot exceed 255 characters.',
-            'company_id.required' => ''You must select a valid company for this employee.',
-            'company_id.exists' => 'The selected company is invalid.',
             'email.email' => 'Please enter a valid email address.',
             'email.unique' => 'This email address is already assigned to another employee.',
-            'phone.phone' => 'Please enter a valid phone number.'
         ];
     }
 }

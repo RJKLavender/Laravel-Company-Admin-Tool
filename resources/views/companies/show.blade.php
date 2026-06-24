@@ -81,40 +81,68 @@
                         <!-- Loops through the empoloyees that belong to this company to show their infomation -->
                         @foreach($company->employees as $worker)
                         <tr>
-                            <!-- First Name -->
-                            <td>
-                                <a href="{{ route('employees.show', $worker->id) }}" class="profile-link fw-bold">
-                                    {{ $worker->first_name }}
-                                </a>
-                            </td>
+                        <!-- First Name -->
+                        <td>
+                            <a href="{{ route('employees.show', $worker->id) }}" class="profile-link fw-bold">
+                                {{ $worker->first_name }}
+                            </a>
+                        </td>
+                        
+                        <!-- Last Name -->
+                        <td>
+                            <a href="{{ route('employees.show', $worker->id) }}" class="profile-link fw-bold">
+                                {{ $worker->last_name }}
+                            </a>
+                        </td>
+                        
+                        <!-- Email -->
+                        <td>{{ $worker->email ?? '-' }}</td>
+                        
+                        <!-- Action Links (View, Edit & Delete) -->
+                        <td class="text-center flex-row justify-content-center d-sm-flex gap-4">
+                            <a href="{{ route('employees.show', $worker->id) }}" class="btn btn-info px-3 py-2 fw-bold">View</a>
+                            <a href="{{ route('employees.edit', $worker->id) }}" class="btn btn-edit px-3 py-2 fw-bold">Edit</a>
                             
-                            <!-- Last Name -->
-                            <td>
-                                <a href="{{ route('employees.show', $worker->id) }}" class="profile-link fw-bold">
-                                    {{ $worker->last_name }}
-                                </a>
-                            </td>
-                            
-                            <!-- Email -->
-                            <td>{{ $worker->email ?? '-' }}</td>
-                            
-                            <!-- Action Links (View, Edit & Delete) Uses Put Method to Update Company and Employee -->
-                            <td class="text-center flex-row justify-content-center d-sm-flex">
-                                 <a href="{{ route('companies.show', $company->id) }}" class="action-link text-info px-2">View</a>
-                                <a href="{{ route('companies.edit', $company->id) }}" class="action-link px-2 text-warning">Edit</a>
-                                <form action="{{ route('employees.update', $worker->id) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Remove this employee from the company roster?');">
-                                    @csrf
-                                    @method('PUT')
-                                    <input type="hidden" name="first_name" value="{{ $worker->first_name }}">
-                                    <input type="hidden" name="last_name" value="{{ $worker->last_name }}">
-                                    <input type="hidden" name="company_id" value="">
-                                    <button type="submit" class="btn btn-link p-0 action-link px-2 text-danger border-0 align-baseline">
-                                        Remove
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
+                            <!-- Form wrapper now encapsulates everything, including the modal -->
+                            <form action="{{ route('employees.update', $worker->id) }}" method="POST" class="d-inline m-0">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="first_name" value="{{ $worker->first_name }}">
+                                <input type="hidden" name="last_name" value="{{ $worker->last_name }}">
+                                <input type="hidden" name="company_id" value="">
+                                
+                                <!-- Trigger button remains visually the same -->
+                                <button type="button" 
+                                        class="btn btn-delete px-3 py-2 fw-bold border-0 align-baseline"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#removeWorkerModal-{{ $worker->id }}">
+                                    Remove
+                                </button>
+
+                                <!-- Modal is safely enclosed within the form scope -->
+                                <div class="modal fade text-start" id="removeWorkerModal-{{ $worker->id }}" tabindex="-1" aria-labelledby="removeWorkerLabel-{{ $worker->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content bg-dark text-light border-secondary">
+                                    <div class="modal-header border-secondary">
+                                        <h5 class="modal-title" id="removeWorkerLabel-{{ $worker->id }}">Remove Employee from Company</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-wrap opacity-90">
+                                        Are you sure you want to remove <strong>{{ $worker->first_name }} {{ $worker->last_name }}</strong> from this company? <br>
+                                        <span class="text-muted small">The employee record will remain, but they will become unemployed and need to be reassigned to another company.</span>
+                                    </div>
+                                    <div class="modal-footer border-secondary">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <!-- Standard type="submit" now works naturally without external form binding attributes -->
+                                        <button type="submit" class="btn btn-danger fw-bold">Remove Worker</button>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -123,18 +151,67 @@
 
     <!-- Company Action Links (Edit & Delete) -->
     <div class="d-flex align-items-center gap-3 pt-2">
-        <a href="{{ route('companies.edit', $company->id) }}" class="action-link text-warning fw-bold">
+        <a href="{{ route('companies.edit', $company->id) }}" class="btn btn-edit py-2 px-4 fw-bold">
             Edit Company
         </a>
         <span class="opacity-25" style="color: var(--text-muted);">|</span>
-        <!-- Delete Method for Delete Link with Warning Box for Confirmation -->
-        <form action="{{ route('companies.destroy', $company->id) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Delete this company? All employees will be unassigned.');">
-            @csrf 
-            @method('DELETE')
-            <button type="submit" class="btn btn-link p-0 action-link text-danger fw-bold border-0 align-baseline">
+        
+        <form id="deleteCompanyForm" action="{{ route('companies.destroy', $company->id) }}" method="POST" class="d-inline m-0">
+        @csrf 
+        @method('DELETE')
+        
+        <input type="hidden" name="source" value="profile">
+        
+            <button type="button" 
+                class="btn btn-delete px-4 py-2 fw-bold border-0 align-baseline"
+                data-bs-toggle="modal" 
+                data-bs-target="#deleteCompanyModal">
                 Delete Company
             </button>
         </form>
+    
     </div>
+</div>
+
+<div class="modal fade text-start" id="deleteCompanyModal" tabindex="-1" aria-labelledby="deleteCompanyLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-light border-secondary">
+      
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title" id="deleteCompanyLabel">
+            {{ $company->employees()->count() > 0 ? 'Company Cannot Be Removed' : 'Confirm Company Deletion' }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body text-wrap opacity-90">
+        @if($company->employees()->count() > 0)
+            <!-- BLOCK CONDITION: Employees exist -->
+            <p>You cannot delete <strong>{{ $company->name }}</strong> because it currently has <strong >{{ $company->employees()->count() }} staff employees</strong>.</p>
+            
+            <div class="alert alert-warning bg-transparent border-warning text-warning mb-0">
+                <i class="bi bi-exclamation-triangle-fill"></i> 
+                <strong>Action Required:</strong> To delete this company, you must either completely remove all employees from this company or reassign them to an another company.
+            </div>
+        @else
+            <!-- ALLOW CONDITION: 0 Employees -->
+            <p>Are you sure you want to permanently delete <strong>{{ $company->name }}</strong>?</p>
+            <span class="text-danger small"><i class="bi bi-info-circle"></i> This action is permanent and cannot be undone.</span>
+        @endif
+      </div>
+      
+      <div class="modal-footer border-secondary">
+        @if($company->employees()->count() > 0)
+            <!-- Display ONLY a close button when blocked -->
+            <button type="button" class="btn btn-secondary fw-bold px-4" data-bs-dismiss="modal">Close</button>
+        @else
+            <!-- Display full operational submit button when company is empty -->
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" form="deleteCompanyForm" class="btn btn-danger fw-bold">Delete Company</button>
+        @endif
+      </div>
+
+    </div>
+  </div>
 </div>
 @endsection

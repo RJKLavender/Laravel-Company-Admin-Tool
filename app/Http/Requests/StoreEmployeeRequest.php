@@ -27,7 +27,7 @@ class StoreEmployeeRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'company_id' => 'required|exists:companies,id', // Must match an existing company ID
             'email' => 'nullable|email|unique:employees,email',
-            'phone' => 'nullable|string|max:20|phone:GB,AUTO',
+            'phone' => 'nullable|string|max:20',
         ];
     }
         // Error messages for the above rules failing validation
@@ -42,7 +42,7 @@ class StoreEmployeeRequest extends FormRequest
             'last_name.max' => 'Last Name cannot exceed 255 characters.',
             'email.email' => 'Please enter a valid email address.',
             'email.unique' => 'This email address is already assigned to another employee.',
-            'phone.phone' => 'Please enter a valid phone number.'
+            
         ];
     }
 }

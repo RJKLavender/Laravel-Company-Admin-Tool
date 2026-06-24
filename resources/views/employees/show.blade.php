@@ -44,7 +44,7 @@
                 <span class="field-value  fs-5" style="color: var(--text-muted);">{{ $employee->phone ?? '-' }}</span>
             </div>
             
-            <!-- Current Company Emplopyer -->
+            <!-- Current Company Employer -->
             <div class="col-12 mt-4">
                 <span class="field-label fs-5">Current Company Employer</span>
                 @if($employee->company)
@@ -60,18 +60,46 @@
 
     <!-- Employee Action Links (Edit & Delete) -->
     <div class="d-flex align-items-center gap-3 pt-2">
-        <a href="{{ route('employees.edit', $employee->id) }}" class="action-link text-warning fw-bold">
+        <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-edit px-3 py-2 fw-bold">
             Edit Details
         </a>
         <span class="opacity-25" style="color: var(--text-muted);">|</span>
-        <!-- Delete Method for Delete Link with Warning Box for Confirmation -->
-        <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" class="d-inline m-0" onsubmit="return confirm('Delete this employee?');">
+        
+        <!-- Updated Form using target binding and removing native onsubmit -->
+        <form id="deleteEmployeeForm" action="{{ route('employees.destroy', $employee->id) }}" method="POST" class="d-inline m-0">
             @csrf 
             @method('DELETE')
-            <button type="submit" class="btn btn-link p-0 action-link text-danger fw-bold border-0 align-baseline">
+            <button type="button" 
+                    class="btn btn-delete px-3 py-2 fw-bold border-0 align-baseline"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#deleteEmployeeModal">
                 Delete Employee
             </button>
         </form>
     </div>
+</div>
+
+<!-- Dark Styled Bootstrap Confirmation Modal -->
+<div class="modal fade text-start" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="deleteEmployeeLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-light border-secondary">
+      
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title" id="deleteEmployeeLabel">Confirm Employee Deletion</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body text-wrap opacity-90">
+        Are you sure you want to permanently delete <strong>{{ $employee->first_name }} {{ $employee->last_name }}</strong>? This action cannot be undone.
+      </div>
+      
+      <div class="modal-footer border-secondary">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <!-- Tied securely to the form above via form="" attribute -->
+        <button type="submit" form="deleteEmployeeForm" class="btn btn-danger fw-bold">Delete Employee</button>
+      </div>
+
+    </div>
+  </div>
 </div>
 @endsection
