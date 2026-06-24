@@ -19,9 +19,9 @@ class CompanyController extends Controller
     {
 
         //sortable options for company view
-        $sortableColumsCoampany = ['name','email','website','employees_count'];
+        $sortableColumsCompany = ['name','email','website','employees_count'];
         
-        $sort = in_array($request->get('sort'), $sortableColumsCoampany) ? $request->get('sort') : 'name';
+        $sort = in_array($request->get('sort'), $sortableColumsCompany) ? $request->get('sort') : 'name';
         $direction = $request->get('direction') === 'desc' ? 'desc' : 'asc';
 
         //Search function Code
@@ -53,14 +53,14 @@ class CompanyController extends Controller
     {
         $validatedData = $request->validated(); // Contains only verified fields
 
-    if ($request->hasFile('logo')) {
-    // This saves the file directly into: storage/app/public/logos/
-    $validatedData['logo'] = $request->file('logo')->store('logos', 'public');
+        if ($request->hasFile('logo')) {
+        // This saves the file directly into: storage/app/public/logos/
+        $validatedData['logo'] = $request->file('logo')->store('logos', 'public');
         }
     
-    Company::create($validatedData);
-    // returns the view with success message
-    return redirect()->route('companies.index')->with('success', 'Company has been successfully created.');
+        Company::create($validatedData);
+        // returns the view with success message
+        return redirect()->route('companies.index')->with('success', 'Company has been successfully created.');
     }
 
     /**

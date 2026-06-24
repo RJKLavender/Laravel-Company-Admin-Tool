@@ -102,18 +102,24 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-       
-    $employee->update($request->validated());
+        $currentCompanyId = $employee->company_id;
+        $employee->update($request->validated());
+        
+        if ($request->input('source') === 'profile' && $currentCompanyId) {
+        return redirect()->route('companies.show', $currentCompanyId)
+            ->with('success', 'Employee has been successfully removed from this company.');
+        }
 
-    return redirect()->route('employees.index')->with('success', 'Employee has been successfully updated.');
+        return redirect()->route('employees.index')->with('success', 'Employee has been successfully updated.');
     }
 
     /*
     * Deletes the employee from the database
     */
-    public function destroy(Employee $employee)
+    public function destroy(Request $request, Employee $employee)
     {
         $employee->delete();
+
         return redirect()->route('employees.index')->with('success', 'Employee has been successfully deleted.');
     }
 

@@ -12,6 +12,13 @@
         </a>
     </div>
 
+     <!-- Success Messaging Alert Box -->
+    @if(session('success'))
+        <div class="alert alert-success border-0 bg-success text-white px-4 py-3 mb-4 shadow-sm" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <!-- Company Profile Card Header -->
     <div class="profile-header-card p-4 mb-5 shadow-sm">
         <div class="row align-items-center g-4">
@@ -111,6 +118,7 @@
                                 <input type="hidden" name="last_name" value="{{ $worker->last_name }}">
                                 <input type="hidden" name="company_id" value="">
                                 
+                                <input type="hidden" name="source" value="profile">
                                 <!-- Trigger button remains visually the same -->
                                 <button type="button" 
                                         class="btn btn-delete px-3 py-2 fw-bold border-0 align-baseline"
